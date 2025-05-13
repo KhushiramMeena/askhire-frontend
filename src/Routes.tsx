@@ -1,0 +1,101 @@
+// src/routes.tsx
+import React, { lazy, Suspense } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useAuthStore } from './store/authStore';
+import { Box, CircularProgress } from '@mui/material';
+
+
+// Layout component
+const Layout = lazy(() => import('./components/layout/Layout'));
+
+// Main page components with lazy loading for better performance
+const HomePage = lazy(() => import('./pages/HomePage'));
+const JobsPage = lazy(() => import('./pages/JobsPage'));
+const JobDetailPage = lazy(() => import('./pages/JobDetailPage'));
+const PostJobPage = lazy(() => import('./pages/PostJobPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
+const DMCAPage = lazy(() => import('./pages/DMCA'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const ErrorPage = lazy(() => import('./pages/ErrorPage'));
+
+
+// Loading fallback component
+const PageLoader: React.FC = () => (
+  <Box 
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh'
+    }}
+  >
+    <CircularProgress color="primary" />
+  </Box>
+);
+
+// Protected route wrapper component
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const { isAuthenticated } = useAuthStore();
+  const location = useLocation();
+  
+  if (!isAuthenticated) {
+    // Redirect to login page with return URL
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+const AppRoutes: React.FC = () => {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* Public routes */}
+          <Route index element={<HomePage />} />
+          <Route path="jobs" element={<JobsPage />} />
+          <Route path="job/:id/:slug" element={<JobDetailPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="terms-of-service" element={<TermsOfServicePage />} />
+          <Route path="dmca" element={<DMCAPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          
+          {/* Protected routes */}
+          <Route 
+            path="post-job" 
+            element={
+              <ProtectedRoute>
+                <PostJobPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="profile" 
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* 404 Error page */}
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
+      </Routes>
+    </Suspense>
+  );
+};
+
+export default AppRoutes;

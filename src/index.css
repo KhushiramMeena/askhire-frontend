@@ -1,5 +1,9 @@
-body {
+/* Reset margin and padding, prevent horizontal scrolling */
+body, html {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -7,6 +11,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Ensure images and other media fit within the viewport */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure all elements respect the box model and avoid overflow */
+* {
+  box-sizing: border-box;
+}
+
+/* Optional: For custom code styling */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

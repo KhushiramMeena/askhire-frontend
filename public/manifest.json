@@ -1,9 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "AskHire",
+  "name": "AskHire – India's Trusted Job Portal",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "askhire.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
@@ -18,8 +18,9 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "description": "AskHire connects job seekers with top employers in India. Discover new career opportunities and hire talented professionals today."
 }
