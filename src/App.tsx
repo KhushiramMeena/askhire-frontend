@@ -10,10 +10,6 @@ import theme from './theme';
 import { initializeLocation } from './utils/LocationUtils';
 import CompleteAuthSecurityWrapper from './components/security/AuthSecurityWrapper';
 
-/**
- * Main App component that wraps the entire application
- * Handles authentication state initialization and route protection
- */
 const App: React.FC = () => {
   const { hydrated } = useAuthStore();
   
