@@ -29,6 +29,7 @@ import {
   Logout as LogoutIcon,
   Settings as SettingsIcon
 } from '@mui/icons-material';
+import { Helmet } from 'react-helmet-async';
 import askhire from '../../assets/askhire.svg'
 import { useAuthStore } from '../../store/authStore';
 
@@ -83,8 +84,26 @@ const Header: React.FC = () => {
   const getAvatarLetter = () => {
     return user?.username ? user.username.charAt(0).toUpperCase() : 'U';
   };
+
+
+    // Schema.org JSON-LD for navigation
+  const navigationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "name": navLinks.map(link => link.text),
+    "url": navLinks.map(link => `${window.location.origin}${link.path}`)
+  };
+  
+
   
   return (
+    <>
+     <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(navigationSchema)}
+        </script>
+      </Helmet>
+   
     <AppBar position="sticky" color="default" elevation={1}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
@@ -347,6 +366,7 @@ const Header: React.FC = () => {
         </Box>
       </Drawer>
     </AppBar>
+     </>
   );
 };
 
