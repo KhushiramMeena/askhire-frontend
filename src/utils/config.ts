@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // Base API URL
 // const API_BASE_URL = 'http://192.168.204.221:8000/api';
+// const API_BASE_URL = `${window.location.origin}/api`;
 const API_BASE_URL = `${window.location.origin}/api`;
 
 export const api = axios.create({
