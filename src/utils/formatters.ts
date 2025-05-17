@@ -1,4 +1,5 @@
 // src/utils/formatters.ts
+import { Job } from "../types/job";
 
 /**
  * Calculate a hash based on the job ID for testing purposes
@@ -34,37 +35,80 @@ export const calculateHash = (jobId: string | number): number => {
   };
   
 
-  export const getDaysAgo = (post_date: string): string => {
-    const postDate = new Date(post_date);
-    const currentDate = new Date();
+//   export const getDaysAgo = (post_date: string): string => {
+//     const postDate = new Date(post_date);
+//     const currentDate = new Date();
   
-    let years = currentDate.getFullYear() - postDate.getFullYear();
-    let months = currentDate.getMonth() - postDate.getMonth();
-    let days = currentDate.getDate() - postDate.getDate();
+// let years = currentDate.getUTCFullYear() - postDate.getUTCFullYear();
+// let months = currentDate.getUTCMonth() - postDate.getUTCMonth();
+// let days = currentDate.getUTCDate() - postDate.getUTCDate();
   
-    if (days < 0) {
-      months--;
-      const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-      days += prevMonth.getDate();
-    }
+//     if (days < 0) {
+//       months--;
+//       const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+//       days += prevMonth.getDate();
+//     }
   
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
+//     if (months < 0) {
+//       years--;
+//       months += 12;
+//     }
   
-    if (years > 0) {
-      return `Posted ${years} year${years > 1 ? 's' : ''} ago`;
-    } else if (months > 0) {
-      return `Posted ${months} month${months > 1 ? 's' : ''} ago`;
-    } else if (days > 0) {
-      return `Posted ${days} day${days > 1 ? 's' : ''} ago`;
-    } else {
-      return "Posted recently";
-    }
-  };
+//     if (years > 0) {
+//       return `Posted ${years} year${years > 1 ? 's' : ''} ago`;
+//     } else if (months > 0) {
+//       return `Posted ${months} month${months > 1 ? 's' : ''} ago`;
+//     } else if (days > 0) {
+//       return `Posted ${days} day${days > 1 ? 's' : ''} ago`;
+//     } else {
+//       return "Posted recently";
+//     }
+//   };
+
+export const getDaysAgo = (post_date: string): string => {
+  const postDate = new Date(post_date);
+  const currentDate = new Date();
+
+  let years = currentDate.getUTCFullYear() - postDate.getUTCFullYear();
+  let months = currentDate.getUTCMonth() - postDate.getUTCMonth();
+  let days = currentDate.getUTCDate() - postDate.getUTCDate();
+
+  if (days < 0) {
+    months--;
+
+    // Get the number of days in the previous UTC month
+    const prevMonthDate = new Date(Date.UTC(
+      currentDate.getUTCFullYear(),
+      currentDate.getUTCMonth(),
+      0 // Day 0 gives last day of previous month
+    ));
+    days += prevMonthDate.getUTCDate();
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  if (years > 0) {
+    return `Posted ${years} year${years > 1 ? 's' : ''} ago`;
+  } else if (months > 0) {
+    return `Posted ${months} month${months > 1 ? 's' : ''} ago`;
+  } else if (days > 0) {
+    return `Posted ${days} day${days > 1 ? 's' : ''} ago`;
+  } else {
+    return "Posted recently";
+  }
+};
+
   
-  
+export const sortJobsByDate = (jobs: Job[]): Job[] => {
+  return [...jobs].sort((a, b) => {
+    const dateA = new Date(a.post_date).getTime(); // Handles UTC
+    const dateB = new Date(b.post_date).getTime();
+    return dateB - dateA; // Descending order: latest first
+  });
+};
   
   /**
    * Get color for workplace type chip

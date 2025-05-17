@@ -4,6 +4,7 @@ import { Box, Typography, IconButton, Container, Divider } from '@mui/material';
 import { Facebook, Twitter, LinkedIn } from '@mui/icons-material';
 import askhire from '../../assets/askhire.svg'
 import EmailIcon from '@mui/icons-material/Email';
+import TelegramIcon from '@mui/icons-material/Telegram';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -60,6 +61,10 @@ const Footer: React.FC = () => {
             
             {/* Social icons */}
             <Box sx={{ display: 'flex', ml: { xs: 0, sm: 0 } }}>
+                            <IconButton size="small" href="https://t.me/AskhireOfficial" color="inherit" aria-label="Telegram" sx={{ p: 0.5 }}>
+                <TelegramIcon fontSize="small" />
+              </IconButton>
+              
             
               <IconButton size="small" href="https://www.linkedin.com/company/askhire/" color="inherit" aria-label="LinkedIn" sx={{ p: 0.5 }}>
                 <LinkedIn fontSize="small" />

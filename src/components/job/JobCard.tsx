@@ -88,57 +88,77 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
       }}
       elevation={1}
     >
-      <CardContent sx={{ p: 2.5, height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <CardContent sx={{ p: 2.5, height: '100%', display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
         {/* Card Header */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {job.company_logo ? (
-              <Avatar 
-                src={job.company_logo} 
-                alt={`${job.company_name} logo`}
-                sx={{ 
-                  width: 48, 
-                  height: 48,
-                  mr: 2,
-                  bgcolor: 'primary.light'
-                }}
-              />
-            ) : (
-              <Avatar 
-                sx={{ 
-                  width: 48, 
-                  height: 48,
-                  mr: 2,
-                  bgcolor: 'primary.light',
-                  color: 'primary.contrastText'
-                }}
-              >
-                {job.company_name.charAt(0).toUpperCase()}
-              </Avatar>
-            )}
-            <Box>
-              <Typography variant="subtitle1" component="h3" noWrap sx={{ fontWeight: 600, color: 'text.primary' }}>
-                {job.job_title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" noWrap>
-                {job.company_name}
-              </Typography>
-            </Box>
-          </Box>
-          
-          {job.workplace && (
-            <Chip 
-              label={job.workplace}
-              size="small"
-              sx={{
-                bgcolor: workplaceStyle.bgColor,
-                color: workplaceStyle.color,
-                fontWeight: 500,
-                height: 24
-              }}
-            />
-          )}
-        </Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+  <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
+    {job.company_logo ? (
+      <Avatar 
+        src={job.company_logo} 
+        alt={`${job.company_name} logo`}
+        sx={{ 
+          width: 48, 
+          height: 48,
+          mr: 2,
+          bgcolor: 'primary.light'
+        }}
+      />
+    ) : (
+      <Avatar 
+        sx={{ 
+          width: 48, 
+          height: 48,
+          mr: 2,
+          bgcolor: 'primary.light',
+          color: 'primary.contrastText'
+        }}
+      >
+        {job.company_name.charAt(0).toUpperCase()}
+      </Avatar>
+    )}
+    <Box sx={{ minWidth: 0, flex: 1 }}>
+      {/* JOB TITLE + WORKPLACE inline */}
+      <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
+        <Typography 
+          variant="subtitle1" 
+          component="h3" 
+          noWrap 
+          sx={{ 
+            fontWeight: 600, 
+            color: 'text.primary',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            flex: 1,
+            minWidth: 0,
+            mr: 1
+          }}
+        >
+          {job.job_title}
+        </Typography>
+        {job.workplace && (
+          <Chip 
+            label={job.workplace}
+            size="small"
+            sx={{
+              bgcolor: workplaceStyle.bgColor,
+              color: workplaceStyle.color,
+              fontWeight: 500,
+              height: 24,
+              flexShrink: 0
+            }}
+          />
+        )}
+      </Box>
+      {/* COMPANY NAME */}
+      <Typography variant="body2" color="text.secondary" noWrap>
+        {job.company_name}
+      </Typography>
+    </Box>
+  </Box>
+</Box>
+
 
         {/* Job Details */}
         <Stack spacing={1} sx={{ mt: 1, mb: 2 }}>
@@ -157,7 +177,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
   <SalaryIcon fontSize="small" sx={{ color: 'text.secondary', mr: 1 }} />
 )}
 
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" noWrap>
                 {getSalaryRange(job.expectedSalary)}
               </Typography>
             </Box>
@@ -165,7 +185,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
           
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <TimeIcon fontSize="small" sx={{ color: 'text.secondary', mr: 1 }} />
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" noWrap>
               {getDaysAgo(job.post_date)}
             </Typography>
           </Box>
@@ -175,10 +195,10 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
         
         {/* Skills Section */}
         <Box sx={{ mt: 'auto' }}>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }} noWrap>
             Required Skills:
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 ,overflow: 'hidden',maxHeight: '32px'}}>
             {skills.slice(0, 3).map((skill, index) => (
               <Chip
                 key={index}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -17,14 +17,12 @@ import {
   SelectChangeEvent,
   Stack,
   IconButton,
-  Card,
-  CardContent
+  useMediaQuery
 } from '@mui/material';
 import {
   Search as SearchIcon,
   FilterList as FilterListIcon,
   Close as CloseIcon,
-  Add as AddIcon,
   BusinessCenter as BusinessCenterIcon
 } from '@mui/icons-material';
 import { Helmet } from 'react-helmet-async';
@@ -33,16 +31,22 @@ import { useAuthStore } from '../store/authStore';
 import JobCard from '../components/job/JobCard';
 import Spinner from '../components/common/Spinner';
 import AdBanner from '../components/common/AdBanner';
-import { alpha } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
+
+const SEO_TITLE = "Browse Jobs | Find Your Dream Career";
+const SEO_DESCRIPTION = "Browse through hundreds of job opportunities across various industries. Filter by job type, location, and workplace preference to find your perfect career match.";
+const SEO_KEYWORDS = "job search, career opportunities, tech jobs, job listings";
 
 interface Filters {
   jobType: string;
   location: string;
-  // experience: string;
   workplace: string;
 }
 
 const JobsPage: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
   const {
     jobs,
     loading,
@@ -59,68 +63,60 @@ const JobsPage: React.FC = () => {
   const { user } = useAuthStore();
   const [initialLoad, setInitialLoad] = useState(true);
   const [searchText, setSearchText] = useState(searchQuery);
-  const [filtersVisible, setFiltersVisible] = useState(false);
+  const [filtersVisible, setFiltersVisible] = useState(true);
   const [filters, setFilters] = useState<Filters>({
     jobType: '',
     location: '',
-    // experience: '',
     workplace: ''
   });
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
-  const [filteredJobs, setFilteredJobs] = useState(jobs);
   const [dataReady, setDataReady] = useState(false);
 
+  // Memoize filtered jobs to improve performance
+  const filteredJobs = useMemo(() => {
+    if (activeFilters.length === 0) return jobs;
+    
+    return jobs.filter(job => {
+      return activeFilters.every(filterName => {
+        const filterValue = filters[filterName as keyof Filters];
+        if (!filterValue) return true;
+        
+        switch (filterName) {
+          case 'jobType':
+            return job.employment_type === filterValue;
+          case 'location':
+            return job.location.startsWith(filterValue);
+          case 'workplace':
+            return job.workplace === filterValue;
+          default:
+            return true;
+        }
+      });
+    });
+  }, [jobs, filters, activeFilters]);
+
+  // Initial data fetch
   useEffect(() => {
     fetchJobs();
     setInitialLoad(false);
   }, [fetchJobs]);
 
-  // Mark data as ready when loading completes, regardless of result count
+  // Mark data as ready when loading completes
   useEffect(() => {
     if (!loading && initialLoad === false) {
       setDataReady(true);
     }
   }, [loading, initialLoad]);
 
+  // Update search text when global search query changes
   useEffect(() => {
     setSearchText(searchQuery);
   }, [searchQuery]);
 
-  // Apply filters when jobs data or filters change
-  useEffect(() => {
-    let result = [...jobs];
-
-    // Apply each active filter
-    activeFilters.forEach(filterName => {
-      const filterValue = filters[filterName as keyof Filters];
-      if (filterValue) {
-        result = result.filter(job => {
-          switch(filterName) {
-            case 'jobType':
-              return job.employment_type === filterValue;
-            case 'location':
-              return job.location === filterValue;
-            // case 'experience':
-            //   return job.experience_level === filterValue;
-            case 'workplace':
-              return job.workplace === filterValue;
-            default:
-              return true;
-          }
-        });
-      }
-    });
-
-    setFilteredJobs(result);
-  }, [jobs, filters, activeFilters]);
-
   const handleSearch = () => {
     if (searchText && searchText.trim()) {
-      // Reset data ready state when starting a new search
       setDataReady(false);
       fetchJobsWithSearch(searchText);
-      
-      // Reset filters when searching
       clearAllFilters();
     }
   };
@@ -131,15 +127,12 @@ const JobsPage: React.FC = () => {
 
   const handleClearSearch = () => {
     setSearchText('');
-    // Reset data ready state when clearing search
     setDataReady(false);
     resetSearch();
-    // Reset filters when clearing search
     clearAllFilters();
   };
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
-    // Reset data ready state when changing page
     setDataReady(false);
     setPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -181,7 +174,6 @@ const JobsPage: React.FC = () => {
     setFilters({
       jobType: '',
       location: '',
-      // experience: '',
       workplace: ''
     });
     setActiveFilters([]);
@@ -191,7 +183,6 @@ const JobsPage: React.FC = () => {
     const map: Record<string, string> = {
       jobType: 'Job Type',
       location: 'Location',
-      // experience: 'Experience',
       workplace: 'Workplace'
     };
     return map[key] || key;
@@ -201,23 +192,66 @@ const JobsPage: React.FC = () => {
     filters[filterName as keyof Filters];
 
   const isAdmin = user?.role === 'admin';
-
-  // Use filteredJobs instead of jobs directly
   const jobsToDisplay = activeFilters.length > 0 ? filteredJobs : jobs;
-  // Only show "No jobs found" when loading is complete and data is ready
   const noJobsFound = !loading && dataReady && jobsToDisplay.length === 0;
-
+  
+  // Locations for structured data
+  const jobLocations = ['Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad', 'Chennai', 'Pune'];
+  
   return (
     <>
       <Helmet>
-        <title>Browse Jobs | Find Your Dream Career</title>
-        <meta name="description" content="Browse through hundreds of job opportunities across various industries. Find your dream job today." />
+        <title>{SEO_TITLE}</title>
+        <meta name="description" content={SEO_DESCRIPTION} />
+        <meta name="keywords" content={SEO_KEYWORDS} />
+        <meta property="og:title" content={SEO_TITLE} />
+        <meta property="og:description" content={SEO_DESCRIPTION} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={SEO_TITLE} />
+        <meta name="twitter:description" content={SEO_DESCRIPTION} />
+        <link rel="canonical" href={window.location.href} />
+        
+        {/* Structured data for job listings (JobPosting schema) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": jobsToDisplay.slice(0, 10).map((job, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "item": {
+                "@type": "JobPosting",
+                "title": job.job_title,
+                "description": job.description,
+                "datePosted": job.post_date,
+                "employmentType": job.employment_type,
+                "hiringOrganization": {
+                  "@type": "Organization",
+                  "name": job.company_name
+                },
+                "jobLocation": {
+                  "@type": "Place",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": job.location
+                  }
+                }
+              }
+            }))
+          })}
+        </script>
       </Helmet>
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 4 } }}>
         {/* Header */}
         <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} mb={4}>
-          <Typography variant="h4" fontWeight={600} gutterBottom>
+          <Typography 
+            variant="h4" 
+            fontWeight={600} 
+            gutterBottom
+            sx={{ mb: { xs: 2, md: 0 } }}
+          >
             Browse Jobs
           </Typography>
           <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={1}>
@@ -238,23 +272,27 @@ const JobsPage: React.FC = () => {
                   </InputAdornment>
                 )
               }}
-              sx={{ minWidth: { sm: 300 }, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-              
+              sx={{ 
+                minWidth: { sm: 300 }, 
+                '& .MuiOutlinedInput-root': { borderRadius: 2 } 
+              }}
             />
-            <Button 
-              variant="contained" 
-              color="primary" 
+            <Button
+              variant="contained"
+              color="primary"
               onClick={handleSearch}
-              sx={{ height: 40,borderRadius: 2 }}
+              sx={{ 
+                height: 40, 
+                borderRadius: 2,
+                width: { xs: '100%', sm: 'auto' }
+              }}
             >
               Search
             </Button>
           </Box>
-
-
         </Box>
 
-        <AdBanner slotId="1234567890" format="auto" />
+        <AdBanner slotId="1234567890" format="auto" responsive={true} />
 
         {/* Filters */}
         <Paper sx={{ p: 1, mb: 3, border: 1, borderColor: 'divider', borderRadius: 1 }}>
@@ -263,10 +301,10 @@ const JobsPage: React.FC = () => {
               <FilterListIcon sx={{ mr: 1, color: 'primary.main' }} />
               <Typography variant="subtitle1" fontWeight={600}>Filters</Typography>
               {activeFilters.length > 0 && (
-                <Chip 
-                  label={`${activeFilters.length} active`} 
-                  color="primary" 
-                  size="small" 
+                <Chip
+                  label={`${activeFilters.length} active`}
+                  color="primary"
+                  size="small"
                   sx={{ ml: 1 }}
                 />
               )}
@@ -291,13 +329,10 @@ const JobsPage: React.FC = () => {
                     {key === 'jobType' && ['Full-time', 'Part-time', 'Contract', 'Internship', 'Freelance'].map((type) => (
                       <MenuItem key={type} value={type}>{type}</MenuItem>
                     ))}
-                    {key === 'location' && ['Bengaluru', 'Mumbai', 'Delhi', 'Hyderabad', 'Chennai', 'Pune'].map((loc) => (
+                    {key === 'location' && jobLocations.map((loc) => (
                       <MenuItem key={loc} value={loc}>{loc}</MenuItem>
                     ))}
-                    {/* {key === 'experience' && ['Entry Level', 'Mid Level', 'Senior Level', 'Manager', 'Director'].map((exp) => (
-                      <MenuItem key={exp} value={exp}>{exp}</MenuItem>
-                    ))} */}
-                    {key === 'workplace' && ['Remote', 'Hybrid', 'On-site'].map((wp) => (
+                    {key === 'workplace' && ['Remote', 'Hybrid', 'Onsite'].map((wp) => (
                       <MenuItem key={wp} value={wp}>{wp}</MenuItem>
                     ))}
                   </Select>
@@ -307,7 +342,7 @@ const JobsPage: React.FC = () => {
           )}
 
           {activeFilters.length > 0 && (
-            <Stack direction="row" spacing={1} flexWrap="wrap">
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
               {activeFilters.map((filter) => (
                 <Chip
                   key={filter}
@@ -316,13 +351,14 @@ const JobsPage: React.FC = () => {
                   color="primary"
                   variant="outlined"
                   size="small"
+                  sx={{ mb: 1 }}
                 />
               ))}
-              <Chip 
-                label="Clear All" 
-                onClick={clearAllFilters} 
-                color="secondary" 
-                size="small" 
+              <Chip
+                label="Clear All"
+                onClick={clearAllFilters}
+                color="secondary"
+                size="small"
               />
             </Stack>
           )}
@@ -352,62 +388,115 @@ const JobsPage: React.FC = () => {
 
         {/* Error */}
         {error && (
-          <Paper sx={{ p: 3, mb: 3, bgcolor: 'error.light', color: 'error.dark', borderLeft: 5, borderColor: 'error.main' }}>
+          <Paper 
+            sx={{ 
+              p: 3, 
+              mb: 3, 
+              bgcolor: 'error.light', 
+              color: 'error.dark', 
+              borderLeft: 5, 
+              borderColor: 'error.main' 
+            }}
+            role="alert"
+          >
             <Typography>Error loading jobs. Please try again later.</Typography>
           </Paper>
         )}
 
-        {/* Loading Spinner - only show when actively loading */}
         {loading ? (
           <Box sx={{ py: 8, textAlign: 'center' }}>
             <Spinner size="large" />
           </Box>
         ) : dataReady && jobsToDisplay.length > 0 ? (
-          /* Jobs Display - only show when data is ready and we have jobs */
           <>
-            <Box display="flex" flexWrap="wrap" gap={3}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(auto-fill, minmax(280px, 1fr))',
+                  md: 'repeat(auto-fill, minmax(320px, 1fr))'
+                },
+                gap: 3,
+                width: '100%'
+              }}
+              role="list"
+              aria-label="Job listings"
+            >
               {jobsToDisplay.map((job) => (
-                <Box key={job.job_id} sx={{ flex: '1 1 300px' }}>
-                  <JobCard job={job} isAdmin={isAdmin} onDelete={isAdmin ? handleDeleteJob : undefined} />
+                <Box 
+                  key={job.job_id}
+                  role="listitem"
+                  sx={{
+                    transition: 'transform 0.2s ease',
+                    '&:hover': {
+                      transform: 'translateY(-3px)'
+                    }
+                  }}
+                >
+                  <JobCard 
+                    job={job} 
+                    isAdmin={isAdmin} 
+                    onDelete={isAdmin ? handleDeleteJob : undefined} 
+                  />
                 </Box>
               ))}
             </Box>
 
             {pagination.totalPages > 1 && !activeFilters.length && (
-              <Box display="flex" justifyContent="center" mt={4}>
+              <Box 
+                display="flex" 
+                justifyContent="center" 
+                mt={4}
+                component="nav"
+                aria-label="Job listings pagination"
+              >
                 <Pagination
                   count={pagination.totalPages}
                   page={pagination.currentPage}
                   onChange={handlePageChange}
                   color="primary"
-                  size="large"
+                  size={isMobile ? "small" : "medium"}
                   showFirstButton
                   showLastButton
                 />
               </Box>
             )}
           </>
-        ) : dataReady && jobsToDisplay.length === 0 ? (
-          /* No Jobs Found - only show when data is ready and we have no jobs */
+        ) : dataReady && noJobsFound ? (
           <Paper sx={{ p: 6, textAlign: 'center', border: 1, borderColor: 'divider', borderRadius: 2 }}>
             <Box mb={3}>
               <BusinessCenterIcon sx={{ fontSize: 60, color: 'text.secondary', opacity: 0.5 }} />
             </Box>
             <Typography variant="h6" gutterBottom>No jobs found</Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              {searchQuery || activeFilters.length > 0 
-                ? "No jobs match your current search criteria or filters." 
+              {searchQuery || activeFilters.length > 0
+                ? "No jobs match your current search criteria or filters."
                 : "There are no job listings available at the moment."}
             </Typography>
             {(searchQuery || activeFilters.length > 0) && (
-              <Stack direction="row" spacing={2} justifyContent="center">
+              <Stack 
+                direction={{ xs: 'column', sm: 'row' }} 
+                spacing={2} 
+                justifyContent="center"
+              >
                 {searchQuery && (
-                  <Button variant="outlined" onClick={handleClearSearch} startIcon={<CloseIcon />}>
+                  <Button 
+                    variant="outlined" 
+                    onClick={handleClearSearch} 
+                    startIcon={<CloseIcon />}
+                    fullWidth={isMobile}
+                  >
                     Clear search
                   </Button>
                 )}
                 {activeFilters.length > 0 && (
-                  <Button variant="outlined" onClick={clearAllFilters} startIcon={<CloseIcon />}>
+                  <Button 
+                    variant="outlined" 
+                    onClick={clearAllFilters} 
+                    startIcon={<CloseIcon />}
+                    fullWidth={isMobile}
+                  >
                     Clear filters
                   </Button>
                 )}
@@ -415,7 +504,6 @@ const JobsPage: React.FC = () => {
             )}
           </Paper>
         ) : (
-          /* Show a spinner for any other state (should rarely happen) */
           <Box sx={{ py: 8, textAlign: 'center' }}>
             <Spinner size="large" />
           </Box>
@@ -423,25 +511,23 @@ const JobsPage: React.FC = () => {
 
         {/* Bottom Banner */}
         <Box mt={6} mb={2}>
-          <AdBanner slotId="0987654321" format="leaderboard" />
+          <AdBanner slotId="0987654321" format="leaderboard" responsive={true} />
         </Box>
 
         {/* SEO content */}
         <Paper sx={{ mt: 6, p: 3, border: 1, borderColor: 'divider', borderRadius: 2 }}>
           <Typography variant="h5" gutterBottom fontWeight={600}>Find Your Dream Job Today</Typography>
           <Typography paragraph>
-            Browse through our extensive job listings spanning various industries and roles.Our platform makes it easy to search for jobs by location, skills, experience level,
+            Browse through our extensive job listings spanning various industries and roles. Our platform makes it easy to search for jobs by location, skills, experience level,
             and employment type.
           </Typography>
-          {/* <Typography paragraph>
-             Create an account to save your favorite jobs, set up job alerts,
-            and track your applications all in one place.
-          </Typography> */}
-          {/* <Typography>
-            Are you an employer?{' '}
-            <RouterLink to="/post-job">Post a job</RouterLink> today
-            and reach thousands of qualified candidates.
-          </Typography> */}
+          <Typography paragraph>
+            Whether you're looking for opportunities in Bengaluru, Mumbai, Delhi, or other major cities across India, we have listings covering all major industry sectors including technology, 
+            healthcare, finance, marketing, and more.
+          </Typography>
+          <Typography>
+            Start your job search today and discover the perfect career opportunity matching your skills and preferences.
+          </Typography>
         </Paper>
       </Container>
     </>

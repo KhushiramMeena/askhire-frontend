@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import { api, authApi } from "../utils/config";
 import { Job } from "../types/job";
+import { sortJobsByDate } from "../utils/formatters";
 
 interface PaginatedResponse {
   jobs: Job[];
@@ -74,9 +75,9 @@ export const useJobStore = create<JobStore>((set, get) => ({
       const response = await api.get<PaginatedResponse>(
         `/jobs?page=${page}&per_page=${perPage}&search=${encodeURIComponent(query)}`
       );
-      
+      const sortedJobs = sortJobsByDate(response.data.jobs);
       set({ 
-        jobs: response.data.jobs, 
+        jobs: sortedJobs, 
         loading: false,
         pagination: {
           currentPage: response.data.page,
@@ -103,9 +104,9 @@ export const useJobStore = create<JobStore>((set, get) => ({
       const response = await api.get<PaginatedResponse>(
         `/jobs?page=${page}&per_page=${perPage}`
       );
-      
+      const sortedJobs = sortJobsByDate(response.data.jobs);
       set({ 
-        jobs: response.data.jobs, 
+        jobs: sortedJobs, 
         loading: false,
         pagination: {
           currentPage: response.data.page,
@@ -144,6 +145,7 @@ export const useJobStore = create<JobStore>((set, get) => ({
       const endpoint = slug 
         ? `/job/${jobId}/${slug}` 
         : `/jobs/${jobId}`;
+            // const endpoint = `/jobs/${jobId}`;
         
       const response = await api.get(endpoint);
       const job = response.data;
