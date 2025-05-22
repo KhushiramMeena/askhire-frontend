@@ -94,6 +94,26 @@ const Header: React.FC = () => {
     "url": navLinks.map(link => `${window.location.origin}${link.path}`)
   };
   
+      const menuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 300, // Limit dropdown height
+      },
+    },
+    // Prevent body scroll lock which can affect layout
+    disableScrollLock: true,
+    // Keep focus on the select after closing
+    disableAutoFocusItem: true,
+    // Position the menu below the select
+  anchorOrigin: {
+    vertical: 'bottom' as const,  // Use 'as const' for literal types
+    horizontal: 'left' as const,
+  },
+  transformOrigin: {
+    vertical: 'top' as const,
+    horizontal: 'left' as const,
+  },
+  };
 
   
   return (
@@ -190,8 +210,9 @@ const Header: React.FC = () => {
                   }}
                   PaperProps={{
                     elevation: 3,
-                    sx: { width: 200, mt: 1 }
+                    sx: { width: 130, mt: 0 }
                   }}
+                  disableScrollLock={true}
                 >
                   <MenuItem 
                     component={RouterLink} 

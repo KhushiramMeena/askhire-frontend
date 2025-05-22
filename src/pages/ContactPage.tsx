@@ -62,7 +62,7 @@ const ContactPage: React.FC = () => {
                       <TelegramIcon fontSize="large" sx={{ color: 'primary.main', mr: 1.5, mt: 0.5 }} />
 
                     </Link>
-                    <Link href="#" color="inherit" sx={{ '&:hover': { color: 'primary.main' } }}>
+                    <Link href="https://www.linkedin.com/company/askhire/" color="inherit" sx={{ '&:hover': { color: 'primary.main' } }}>
                       <LinkedInIcon fontSize="large" sx={{ color: 'primary.main', mr: 1.5, mt: 0.5 }} />
 
                     </Link>

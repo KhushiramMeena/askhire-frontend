@@ -79,6 +79,9 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
         display: 'block',
         textDecoration: 'none',
         height: '100%',
+        overflow: 'hidden', 
+        boxSizing: 'border-box',
+
         cursor: 'pointer',
         transition: 'all 0.3s ease',
         '&:hover': {

@@ -4,7 +4,12 @@ import axios from 'axios';
 // Base API URL
 // const API_BASE_URL = 'http://192.168.204.221:8000/api';
 // const API_BASE_URL = `${window.location.origin}/api`;
-const API_BASE_URL = `${window.location.origin}/api`;
+// const API_BASE_URL = 'http://askhire.in:8000/api';
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.');
+const API_BASE_URL = isLocal
+  ? 'http://192.168.204.221:8000/api'
+  : '/api';
+
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
