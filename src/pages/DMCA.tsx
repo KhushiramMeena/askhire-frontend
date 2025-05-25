@@ -26,8 +26,7 @@ const DMCAPage: React.FC = () => {
     <>
       <Helmet>
         <title>DMCA Policy | Askhire</title>
-        <meta name="description" content="Learn about our DMCA policy and how to report copyright infringement on our platform." />
-        <meta name="robots" content="noindex" />
+        <meta name="description" content="index, Learn about our DMCA policy and how to report copyright infringement on our platform." />
       </Helmet>
       
       <Container maxWidth="md" sx={{ py: 6 }}>
