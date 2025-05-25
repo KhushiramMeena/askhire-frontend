@@ -17,8 +17,7 @@ const TermsOfServicePage: React.FC = () => {
     <>
       <Helmet>
         <title>Terms of Service | Askhire</title>
-        <meta name="description" content="Read the terms and conditions for using Askhire services." />
-        <meta name="robots" content="noindex" />
+        <meta name="description" content="index, Read the terms and conditions for using Askhire services." />
       </Helmet>
       
       <Container sx={{ py: 6 }}>

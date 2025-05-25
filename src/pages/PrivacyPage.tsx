@@ -17,8 +17,7 @@ const PrivacyPolicyPage: React.FC = () => {
     <>
       <Helmet>
         <title>Privacy Policy | Askhire</title>
-        <meta name="description" content="Read our privacy policy to understand how we collect, use, and protect your personal information." />
-        <meta name="robots" content="noindex" />
+        <meta name="description" content="index, Read our privacy policy to understand how we collect, use, and protect your personal information." />
       </Helmet>
       
       <Container maxWidth="md" sx={{ py: 6 }}>

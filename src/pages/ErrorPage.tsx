@@ -18,7 +18,7 @@ const ErrorPage: React.FC = () => {
       <Helmet>
         <title>Page Not Found | Askhire</title>
         <meta name="description" content="The page you were looking for could not be found." />
-        <meta name="robots" content="noindex" />
+        
       </Helmet>
       
       <Container maxWidth="sm" sx={{ py: 8 }}>

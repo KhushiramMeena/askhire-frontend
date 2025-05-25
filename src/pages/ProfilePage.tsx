@@ -189,7 +189,7 @@ const ProfilePage: React.FC = () => {
       <Helmet>
         <title>Your Profile | Askhire</title>
         <meta name="description" content="Manage your Askhire profile and account settings." />
-        <meta name="robots" content="noindex" />
+      
       </Helmet>
       
       <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2, py: 6 }}>
