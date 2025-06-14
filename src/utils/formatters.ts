@@ -35,36 +35,6 @@ export const calculateHash = (jobId: string | number): number => {
   };
   
 
-//   export const getDaysAgo = (post_date: string): string => {
-//     const postDate = new Date(post_date);
-//     const currentDate = new Date();
-  
-// let years = currentDate.getUTCFullYear() - postDate.getUTCFullYear();
-// let months = currentDate.getUTCMonth() - postDate.getUTCMonth();
-// let days = currentDate.getUTCDate() - postDate.getUTCDate();
-  
-//     if (days < 0) {
-//       months--;
-//       const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-//       days += prevMonth.getDate();
-//     }
-  
-//     if (months < 0) {
-//       years--;
-//       months += 12;
-//     }
-  
-//     if (years > 0) {
-//       return `Posted ${years} year${years > 1 ? 's' : ''} ago`;
-//     } else if (months > 0) {
-//       return `Posted ${months} month${months > 1 ? 's' : ''} ago`;
-//     } else if (days > 0) {
-//       return `Posted ${days} day${days > 1 ? 's' : ''} ago`;
-//     } else {
-//       return "Posted recently";
-//     }
-//   };
-
 export const getDaysAgo = (post_date: string): string => {
   const postDate = new Date(post_date);
   const currentDate = new Date();
@@ -80,7 +50,7 @@ export const getDaysAgo = (post_date: string): string => {
     const prevMonthDate = new Date(Date.UTC(
       currentDate.getUTCFullYear(),
       currentDate.getUTCMonth(),
-      0 // Day 0 gives last day of previous month
+      0 
     ));
     days += prevMonthDate.getUTCDate();
   }
@@ -94,6 +64,9 @@ export const getDaysAgo = (post_date: string): string => {
     return `Posted ${years} year${years > 1 ? 's' : ''} ago`;
   } else if (months > 0) {
     return `Posted ${months} month${months > 1 ? 's' : ''} ago`;
+  } else if (days >= 7) {
+    const weeks = Math.floor(days / 7);
+    return `Posted ${weeks} week${weeks > 1 ? 's' : ''} ago`;
   } else if (days > 0) {
     return `Posted ${days} day${days > 1 ? 's' : ''} ago`;
   } else {

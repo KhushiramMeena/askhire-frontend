@@ -179,7 +179,7 @@ const TermsOfServicePage: React.FC = () => {
               </Typography>
               <List disablePadding sx={{ pl: 2, mb: 2 }}>
                 <ListItem sx={{ display: 'list-item', listStyleType: 'disc', py: 0.5 }}>
-                  <ListItemText primary="Email: legal@askhire.in" primaryTypographyProps={{ variant: 'body1' }} />
+                  <ListItemText primary="Email: hello@askhire.in" primaryTypographyProps={{ variant: 'body1' }} />
                 </ListItem>
               </List>
             </Box>

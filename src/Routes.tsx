@@ -11,6 +11,7 @@ const Layout = lazy(() => import('./components/layout/Layout'));
 // Main page components with lazy loading for better performance
 const HomePage = lazy(() => import('./pages/HomePage'));
 const JobsPage = lazy(() => import('./pages/JobsPage'));
+const JobPostEmail = lazy(() => import('./pages/JobPostEmail'));
 const JobDetailPage = lazy(() => import('./pages/JobDetailPage'));
 const PostJobPage = lazy(() => import('./pages/PostJobPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -63,6 +64,7 @@ const AppRoutes: React.FC = () => {
           {/* Public routes */}
           <Route index element={<HomePage />} />
           <Route path="jobs" element={<JobsPage />} />
+          {/* <Route path="/jobs-with-recruiter-email" element={<JobPostEmail />} /> */}
           <Route path="job/:id/:slug" element={<JobDetailPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />

@@ -69,9 +69,9 @@ const Footer: React.FC = () => {
               <IconButton size="small" href="https://www.linkedin.com/company/askhire/" color="inherit" aria-label="LinkedIn" sx={{ p: 0.5 }}>
                 <LinkedIn fontSize="small" />
               </IconButton>
-              <IconButton size="small" href="mailto:support@askhire.in" color="inherit" aria-label="Email" sx={{ p: 0.5 }}>
+              <IconButton size="small" href="mailto:hello@askhire.in" color="inherit" aria-label="Email" sx={{ p: 0.5 }}>
   <EmailIcon fontSize="small" />
-  <p style={{ color: '#a0aec0', marginLeft: 4, fontSize:'4' }}>support@askhire.in</p>
+  <p style={{ color: '#a0aec0', marginLeft: 4, fontSize:'4' }}>hello@askhire.in</p>
 </IconButton>
             </Box>
           </Box>

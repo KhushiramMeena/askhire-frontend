@@ -187,7 +187,7 @@ const PrivacyPolicyPage: React.FC = () => {
             </Typography>
             <List disablePadding>
               <ListItem sx={{ py: 0.5 }}>
-                <ListItemText primary="Email: legal@askhire.in" />
+                <ListItemText primary="Email: hello@askhire.in" />
               </ListItem>
             </List>
           </Box>
