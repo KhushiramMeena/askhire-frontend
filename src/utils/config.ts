@@ -7,7 +7,7 @@ import axios from 'axios';
 // const API_BASE_URL = 'http://askhire.in:8000/api';
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname.startsWith('192.');
 const API_BASE_URL = isLocal
-  ? 'http://192.168.204.221:8000/api'
+  ? 'http://192.168.177.221:8000/api'
   : '/api';
 
 

@@ -148,7 +148,7 @@ const DMCAPage: React.FC = () => {
                 Please send your DMCA takedown notice to:
               </Typography>
               <Typography variant="body1" color="primary" fontWeight="bold">
-                support@askhire.in
+                hello@askhire.in
               </Typography>
             </Box>
             

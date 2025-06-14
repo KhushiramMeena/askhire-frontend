@@ -60,25 +60,30 @@ const RegisterPage: React.FC = () => {
     return true;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!validatePasswords()) {
-      return;
-    }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    try {
-      await register(username, password);
+  if (!emailRegex.test(username)) {
+    setPasswordError("Enter a valid email address.");
+    return;
+  }
 
-      // If registration is successful, redirect to login
-      navigate("/login", {
-        state: { message: "Registration successful! Please log in." },
-      });
-    } catch (error) {
-      // Error state is handled by the store
-      console.error("Registration failed");
-    }
-  };
+  if (!validatePasswords()) {
+    return;
+  }
+
+  try {
+    await register(username, password);
+    navigate("/login", {
+      state: { message: "Registration successful! Please log in." },
+    });
+  } catch (error) {
+    console.error("Registration failed");
+  }
+};
+
 
   return (
     <>
@@ -120,13 +125,20 @@ const RegisterPage: React.FC = () => {
               <TextField
                 fullWidth
                 id="username"
-                label="Username"
+                label="Email Address"
                 name="username"
+                type="email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Choose a username"
+                placeholder="Enter a valid email address"
                 required
                 variant="outlined"
+                error={!!username && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username)}
+                helperText={
+                  username && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username)
+                    ? "Enter a valid email address"
+                    : ""
+                }
               />
             </Box>
 

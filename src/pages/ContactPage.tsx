@@ -69,7 +69,7 @@ const ContactPage: React.FC = () => {
                     <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                       <EmailIcon fontSize="large" sx={{ color: 'primary.main', mr: 1.5, mt: 0.2 }} />
                       <Box>
-                        <Typography fontWeight="medium" sx={{ color: 'text.secondary', mr: 1.5, mt: 0.9 }}>Email: info@askhire.in</Typography>
+                        <Typography fontWeight="medium" sx={{ color: 'text.secondary', mr: 1.5, mt: 0.9 }}>Email: hello@askhire.in</Typography>
                       </Box>
                     </Box>
                   </Stack>
