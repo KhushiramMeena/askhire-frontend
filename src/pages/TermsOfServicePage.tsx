@@ -27,9 +27,9 @@ const TermsOfServicePage: React.FC = () => {
           </Typography>
           
           {/* AdSense Banner */}
-          <Box sx={{ mb: 4 }}>
+          {/* <Box sx={{ mb: 4 }}>
             <AdBanner slotId="1234567890" format="leaderboard" />
-          </Box>
+          </Box> */}
           
           <Box sx={{ px: { xs: 0, md: 0 } }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -186,9 +186,9 @@ const TermsOfServicePage: React.FC = () => {
           </Box>
           
           {/* AdSense Banner */}
-          <Box sx={{ mt: 4 }}>
+          {/* <Box sx={{ mt: 4 }}>
             <AdBanner slotId="0987654321" format="leaderboard" />
-          </Box>
+          </Box> */}
         </Box>
       </Container>
     </>

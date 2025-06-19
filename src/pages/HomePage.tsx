@@ -21,7 +21,7 @@ import {
   CheckCircle as CheckCircleIcon 
 } from '@mui/icons-material';
 
-// Enhanced with structured data for rich search results
+// Enhanced structured data for rich search results
 const JobPostingSchema = (jobs: any[]) => {
   return {
     __html: JSON.stringify({
@@ -60,35 +60,51 @@ const HomePage: React.FC = () => {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery((theme: Theme) => theme.breakpoints.between('sm', 'md'));
 
-  // SEO-friendly meta tags based on dynamic content
+  // Enhanced SEO-friendly meta tags with proper keyword distribution
   const metaTags = useMemo(() => {
     const jobTitles = featuredJobs
       .map(job => job.job_title || job.job_title || '')
       .filter(Boolean)
+      .slice(0, 3)
       .join(', ');
     
-    // TypeScript-safe way to get unique companies
     const uniqueCompanies = Array.from(
       new Map(featuredJobs.map(job => [job.company_name || '', job.company_name || '']))
         .values()
-    ).filter(Boolean).join(', ');
+    ).filter(Boolean).slice(0, 3).join(', ');
+    
+    const enhancedDescription = `Find your dream job at top companies like ${uniqueCompanies || 'Barclays, Sage, Expedia Group'}. Currently featuring ${jobTitles || 'Software Engineer, Data Analyst, Product Manager'} roles. Browse jobs, build your career, and connect with leading employers in India.`;
     
     return {
-      title: "Askhire - Find Your Dream Job Today",
-      description: `Find your dream job at top companies like ${uniqueCompanies || 'leading employers'}. Currently featuring ${jobTitles || 'exciting opportunities'}.`,
-      keywords: `AskHire, jobs, career, employment, recruitment, hiring, job search, ${jobTitles}, ${uniqueCompanies}`
+      title: "Find Your Dream Job Today - AskHire | Jobs, Software Engineer, Skills",
+      description: enhancedDescription,
+      keywords: `jobs, software engineer, skills, browse jobs, career, employment, recruitment, hiring, job search, ${jobTitles}, ${uniqueCompanies}, AskHire, find jobs, dream job`
     };
   }, [featuredJobs]);
 
   useEffect(() => {
-    // Fetch latest jobs
+    // Preload critical resources for better LCP
+    const preloadCriticalResources = () => {
+      // Preload hero background if using images
+      // const heroImage = new Image();
+      // heroImage.src = '/assets/hero-pattern.svg';
+      
+      // Preload featured job images
+      featuredJobs.forEach(job => {
+        if (job.company_logo) {
+          const img = new Image();
+          img.src = job.company_logo;
+        }
+      });
+    };
+    
+    preloadCriticalResources();
     fetchJobs(1, 3);
   }, [fetchJobs]);
 
   useEffect(() => {
     if (jobs.length > 0) {
       try {
-        // Sort by posting date to show newest jobs first
         const sortedJobs = [...jobs].sort(
           (a, b) => {
             const dateA = new Date(a.post_date || 0).getTime();
@@ -110,38 +126,77 @@ const HomePage: React.FC = () => {
         <title>{metaTags.title}</title>
         <meta name="description" content={metaTags.description} />
         <meta name="keywords" content={metaTags.keywords} />
+        
+        {/* Enhanced Open Graph tags */}
         <meta property="og:title" content={metaTags.title} />
         <meta property="og:description" content={metaTags.description} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
+        <meta property="og:url" content="https://askhire.in/" />
+        <meta property="og:image" content="https://askhire.in/logo512.png" />
+        <meta property="og:site_name" content="AskHire" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Enhanced Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={metaTags.title} />
         <meta name="twitter:description" content={metaTags.description} />
-        <link rel="canonical" href={window.location.href} />
+        <meta name="twitter:image" content="https://askhire.in/logo512.png" />
+        <meta name="twitter:site" content="@AskHire" />
+        <meta name="twitter:creator" content="@AskHire" />
+        
+        {/* Remove duplicate canonical - only use one */}
+        <link rel="canonical" href="https://askhire.in/" />
+        
+        {/* Preload critical resources for better LCP */}
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" as="style" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Additional meta tags for SEO */}
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="author" content="AskHire" />
+        <meta name="revisit-after" content="1 days" />
+        <meta name="language" content="English" />
+        <meta name="geo.region" content="IN" />
+        <meta name="geo.country" content="India" />
+        <meta name="geo.placename" content="Bengaluru, Karnataka, India" />
+        
         {featuredJobs.length > 0 && (
           <script type="application/ld+json" dangerouslySetInnerHTML={JobPostingSchema(featuredJobs)} />
         )}
+        
+        {/* Additional structured data for organization */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "AskHire",
+            "url": "https://askhire.in",
+            "logo": "https://askhire.in/logo512.png",
+            "description": "Find your dream job at top companies in India. Connect with leading employers and discover exciting career opportunities.",
+            "sameAs": [
+              "https://twitter.com/AskHire"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "availableLanguage": "English"
+            }
+          })}
+        </script>
       </Helmet>
 
-      {/* Hero Section - Enhanced with responsive sizing */}
+      {/* Hero Section - Optimized for LCP */}
       <Box 
+        component="section"
         sx={{ 
           background: 'linear-gradient(135deg, #1E3A8A 0%, #4F46E5 100%)', 
           color: 'white', 
-          py: { xs: 6, sm: 8, md: 10 },
+          py: { xs: 5, sm: 7, md: 9 },
           position: 'relative',
           overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'url("/assets/hero-pattern.svg")', 
-            opacity: 0.1,
-            zIndex: 1,
-          }
+          // Optimize for LCP - avoid background images that block rendering
+          willChange: 'transform',
         }}
       >
         <Container sx={{ position: 'relative', zIndex: 2 }}>
@@ -151,28 +206,34 @@ const HomePage: React.FC = () => {
             mx: 'auto',
             px: { xs: 2, sm: 0 }
           }}>
+            {/* CRITICAL FIX: Proper H1 heading with keywords */}
             <Typography 
-              variant={isMobile ? "h4" : "h3"} 
+              component="h1"
+              variant="h2"
               sx={{ 
                 fontWeight: 800, 
-                mb: { xs: 2, sm: 4 },
-                textShadow: '0 2px 10px rgba(0,0,0,0.15)',
-                lineHeight: 1.2
+                mb: { xs: 2, sm: 3 },
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                lineHeight: { xs: 1.2, sm: 1.1 },
+                // Optimize font loading for LCP
+                fontDisplay: 'swap'
               }}
             >
               Find Your Dream Job Today
             </Typography>
             <Typography 
-              variant={isMobile ? "body1" : "h6"} 
+              component="p"
+              variant="h6"
               sx={{ 
-                mb: { xs: 4, sm: 6 }, 
+                mb: { xs: 3, sm: 4 }, 
                 color: '#93C5FD',
-                maxWidth: '85%',
+                maxWidth: '90%',
                 mx: 'auto',
-                fontWeight: 400
+                fontWeight: 400,
+                fontSize: { xs: '1rem', sm: '1.1rem' }
               }}
             >
-              Discover opportunities that match your skills and career goals.
+              Discover opportunities in software engineering, browse jobs at top companies, and build your career with AskHire.
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button 
@@ -180,19 +241,18 @@ const HomePage: React.FC = () => {
                 to="/jobs"
                 variant="contained"
                 size={isMobile ? "medium" : "large"}
-                aria-label="Browse all job listings"
+                aria-label="Browse all job listings and software engineer positions"
                 sx={{ 
                   backgroundColor: 'white', 
                   color: '#2563EB', 
                   fontWeight: 600,
                   px: { xs: 3, sm: 4 },
-                  py: { xs: 1, sm: 1.5 },
+                  py: { xs: 1.2, sm: 1.5 },
                   borderRadius: '8px',
-                  boxShadow: '0 4px 14px rgba(0,0,0,0.1)',
+                  fontSize: { xs: '0.9rem', sm: '1rem' },
                   '&:hover': { 
                     backgroundColor: '#EFF6FF',
                     transform: 'translateY(-2px)',
-                    boxShadow: '0 6px 20px rgba(0,0,0,0.15)'
                   },
                   transition: 'all 0.2s ease-in-out'
                 }}
@@ -205,11 +265,13 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* Featured Jobs Section */}
-      <Box sx={{ 
-        py: { xs: 4, sm: 5, md: 6 }, 
-        backgroundColor: '#F3F4F6',
-        position: 'relative'
-      }}>
+      <Box 
+        component="section"
+        sx={{ 
+          py: { xs: 4, sm: 5, md: 6 }, 
+          backgroundColor: '#F9FAFB',
+        }}
+      >
         <Container>
           <Box sx={{ 
             display: 'flex', 
@@ -219,12 +281,14 @@ const HomePage: React.FC = () => {
             mb: { xs: 3, sm: 4 },
             gap: isMobile ? 2 : 0
           }}>
+            {/* CRITICAL FIX: Proper H2 heading with keywords */}
             <Typography 
-              variant={isMobile ? "h5" : "h4"} 
               component="h2"
+              variant="h4"
               sx={{ 
                 fontWeight: 'bold',
                 color: '#111827',
+                fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
                 position: 'relative',
                 '&::after': {
                   content: '""',
@@ -244,7 +308,7 @@ const HomePage: React.FC = () => {
               component={Link}
               to="/jobs"
               variant="text"
-              aria-label="View all available jobs"
+              aria-label="View all software engineer and other job opportunities"
               endIcon={
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -253,6 +317,7 @@ const HomePage: React.FC = () => {
               sx={{ 
                 color: '#2563EB',
                 fontWeight: 600,
+                fontSize: { xs: '0.875rem', sm: '1rem' },
                 '&:hover': {
                   backgroundColor: 'rgba(37, 99, 235, 0.04)'
                 }
@@ -267,7 +332,7 @@ const HomePage: React.FC = () => {
               display: 'flex', 
               justifyContent: 'center', 
               alignItems: 'center', 
-              height: { xs: 200, sm: 300 },
+              height: { xs: 200, sm: 250 },
               width: '100%'
             }}>
               <Spinner />
@@ -290,26 +355,24 @@ const HomePage: React.FC = () => {
           ) : featuredJobs.length > 0 ? (
             <Box
               role="list"
-              aria-label="Featured job listings"
+              aria-label="Featured software engineer and other job listings"
               sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
-                flexWrap: 'wrap',
-                gap: 3,
-                width: '100%',
-                justifyContent: { xs: 'center', md: 'space-between' }
+                display: 'grid',
+                gridTemplateColumns: { 
+                  xs: '1fr', 
+                  sm: 'repeat(2, 1fr)', 
+                  md: 'repeat(3, 1fr)' 
+                },
+                gap: { xs: 2, sm: 2.5, md: 3 },
+                width: '100%'
               }}
             >
               {featuredJobs.map((job: any, index: number) => (
                 <Box
                   key={job.id || index}
                   sx={{
-                    width: isMobile ? '100%' : isTablet ? 'calc(50% - 12px)' : 'calc(33.333% - 16px)',
-                    minWidth: '280px',
-                    maxWidth: '100%',
-                    flex: '1 1 auto',
                     transform: 'scale(1)',
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    transition: 'transform 0.2s ease',
                     '&:hover': {
                       transform: 'scale(1.02)',
                     }
@@ -342,105 +405,98 @@ const HomePage: React.FC = () => {
           )}
 
           {/* AdSense Banner */}
-          <Box 
+          {/* <Box 
             sx={{ 
-              mt: { xs: 4, sm: 6 },
+              mt: { xs: 4, sm: 5 },
               overflow: 'hidden',
               borderRadius: 2,
               width: '100%'
             }}
           >
             <AdBanner slotId="1234567890" format="leaderboard" />
-          </Box>
+          </Box> */}
         </Container>
       </Box>
 
-      {/* Why Choose Us Section */}
-      <Box sx={{ py: { xs: 5, md: 8 }, backgroundColor: 'white' }}>
-        {/* <Container>
+      {/* Why Choose AskHire Section - Enhanced for SEO */}
+      <Box 
+        component="section"
+        sx={{ py: { xs: 5, md: 7 }, backgroundColor: 'white' }}
+      >
+        <Container maxWidth="lg">
           <Typography 
-            variant="h4" 
             component="h2"
-            align="center"
+            variant="h4"
             sx={{ 
-              fontWeight: 'bold',
-              mb: { xs: 4, md: 6 },
+              fontWeight: 'bold', 
+              mb: { xs: 4, md: 5 }, 
+              textAlign: 'center',
+              fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
               color: '#111827'
             }}
           >
-            Why Choose AskHire
+            Why Choose AskHire for Your Career
           </Typography>
 
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              gap: { xs: 4, md: 3 },
-              justifyContent: 'center',
+          <Box 
+            sx={{ 
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+              gap: { xs: 3, md: 4 },
               mb: 4
             }}
           >
             {[
               {
-                icon: "🔍",
-                title: "Smart Matching",
-                description: "Our AI-powered system connects you with jobs that match your skills and experience."
+                icon: <StarIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
+                title: 'Top Companies',
+                description: 'Connect with leading companies in tech, finance, healthcare and more industries across India.'
               },
               {
-                icon: "⚡",
-                title: "Fast Application",
-                description: "Apply to multiple positions with just a few clicks using your saved profile."
+                icon: <TrendingIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
+                title: 'Latest Opportunities',
+                description: 'Access the newest software engineer jobs, internships and career opportunities updated daily.'
               },
               {
-                icon: "🌟",
-                title: "Top Employers",
-                description: "Access opportunities from industry-leading companies looking for talent like you."
+                icon: <CheckCircleIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
+                title: 'Verified Listings',
+                description: 'All job listings are verified to ensure authenticity, quality and genuine career opportunities.'
               }
             ].map((feature, index) => (
               <Paper
                 key={index}
                 elevation={0}
                 sx={{
-                  p: 3,
-                  borderRadius: 2,
-                  backgroundColor: '#F9FAFB',
+                  p: { xs: 3, sm: 4 },
+                  textAlign: 'center',
                   border: '1px solid #E5E7EB',
+                  borderRadius: 2,
                   height: '100%',
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)'
-                  },
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  flex: 1
+                  }
                 }}
               >
-                <Box sx={{ 
-                  fontSize: '2.5rem', 
-                  mb: 2,
-                  height: 60,
-                  width: 60,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '50%',
-                  backgroundColor: '#EFF6FF'
-                }}>
+                <Box sx={{ mb: 2 }}>
                   {feature.icon}
                 </Box>
                 <Typography 
-                  variant="h6" 
                   component="h3"
-                  sx={{ mb: 1, fontWeight: 600 }}
+                  variant="h6" 
+                  sx={{ 
+                    mb: 1, 
+                    fontWeight: 'bold',
+                    fontSize: { xs: '1.1rem', sm: '1.25rem' }
+                  }}
                 >
                   {feature.title}
                 </Typography>
                 <Typography 
-                  variant="body1" 
+                  variant="body2" 
                   color="text.secondary"
+                  sx={{ lineHeight: 1.6 }}
                 >
                   {feature.description}
                 </Typography>
@@ -448,18 +504,30 @@ const HomePage: React.FC = () => {
             ))}
           </Box>
 
-          <Box sx={{ textAlign: 'center', mt: 4 }}>
+          {/* Enhanced CTA section */}
+          <Box sx={{ textAlign: 'center', mt: { xs: 4, md: 5 } }}>
+            <Typography 
+              component="p"
+              variant="body1" 
+              color="text.secondary" 
+              sx={{ mb: 3, maxWidth: 600, mx: 'auto' }}
+            >
+              Join thousands of professionals who found their dream jobs through AskHire. 
+              Start browsing opportunities today.
+            </Typography>
             <Button
               component={Link}
               to="/register"
               variant="contained"
               size={isMobile ? "medium" : "large"}
+              aria-label="Register to start your job search and career journey"
               sx={{
                 backgroundColor: '#2563EB',
                 fontWeight: 600,
                 px: { xs: 3, sm: 5 },
-                py: { xs: 1, sm: 1.5 },
+                py: { xs: 1.2, sm: 1.5 },
                 borderRadius: '8px',
+                fontSize: { xs: '0.9rem', sm: '1rem' },
                 '&:hover': {
                   backgroundColor: '#1E40AF'
                 }
@@ -468,71 +536,7 @@ const HomePage: React.FC = () => {
               Get Started Today
             </Button>
           </Box>
-        </Container> */}
-      <Container maxWidth="lg">
-          <Typography 
-            id="why-choose-heading"
-            variant="h3" 
-            sx={{ 
-              fontWeight: 'bold', 
-              mb: 5, 
-              textAlign: 'center',
-              fontSize: { xs: '1.5rem', md: '1.75rem' }
-            }}
-          >
-            Why Choose AskHire
-          </Typography>
-
-          <Box 
-            sx={{ 
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 3,
-              justifyContent: 'center'
-            }}
-          >
-            {[
-              {
-                icon: <StarIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
-                title: 'Top Companies',
-                description: 'Connect with leading companies in tech, finance, healthcare and more.'
-              },
-              {
-                icon: <TrendingIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
-                title: 'Latest Opportunities',
-                description: 'Access the newest job postings and internships updated daily.'
-              },
-              {
-                icon: <CheckCircleIcon sx={{ fontSize: 40, color: '#3B82F6' }} />,
-                title: 'Verified Listings',
-                description: 'All job listings are verified to ensure authenticity and quality.'
-              }
-            ].map((feature, index) => (
-              <Paper
-                key={index}
-                elevation={0}
-                sx={{
-                  p: 3,
-                  textAlign: 'center',
-                  flex: { xs: '1 1 100%', sm: '1 1 calc(33.333% - 20px)' },
-                  border: '1px solid #E5E7EB',
-                  borderRadius: 2
-                }}
-              >
-                <Box sx={{ mb: 2 }}>
-                  {feature.icon}
-                </Box>
-                <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
-                  {feature.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {feature.description}
-                </Typography>
-              </Paper>
-            ))}
-          </Box>
         </Container>
-
       </Box>
     </>
   );

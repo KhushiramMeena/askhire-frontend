@@ -15,7 +15,7 @@ const Layout: React.FC = () => {
     // Only load AdSense if we're in production
     if (process.env.NODE_ENV === 'production') {
       const script = document.createElement('script');
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX';
+      // script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX';
       script.async = true;
       script.crossOrigin = 'anonymous';
       document.head.appendChild(script);

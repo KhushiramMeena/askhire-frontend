@@ -1,86 +1,541 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TLH379DK');</script>
-<!-- End Google Tag Manager -->
- <!-- ✅ Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8482080386120022"
-     crossorigin="anonymous"></script>
-<!-- ✅ End AdSense -->
-
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="robots" content="index, follow" />
-    <meta name="author" content="AskHire Team" />
-
-    <!-- Title -->
-    <title>AskHire – India's Trusted Job Portal for Hiring & Careers</title>
-
-    <!-- Primary Meta Description -->
-    <meta name="description" content="AskHire connects talented professionals with top employers in India. Find your dream job or the perfect hire through our trusted career platform." />
-    <meta name="keywords" content="AskHire, job portal India, hire professionals, career platform, job search India, trusted hiring platform, apply for jobs India, online job applications" />
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://askhire.in/" />
-
-    <!-- Favicon -->
-    <link rel="icon" href="%PUBLIC_URL%/askhire.ico" sizes="32x32" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
-    <!-- Preload Key Logo Asset -->
-    <link rel="preload" as="image" href="%PUBLIC_URL%/logo512.png" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="AskHire – Your Gateway to Top Jobs in India" />
-    <meta property="og:description" content="Discover career opportunities or hire talent with AskHire. India’s trusted job search platform connecting seekers and employers." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://askhire.in/" />
-    <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
-    <meta property="og:site_name" content="AskHire" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AskHire – Find Your Dream Job or Hire Top Talent" />
-    <meta name="twitter:description" content="Search jobs or post hiring ads on AskHire, a trusted career platform for India’s top professionals and employers." />
-    <meta name="twitter:image" content="%PUBLIC_URL%/logo512.png" />
-    <meta name="twitter:site" content="@AskHire" />
-
-    <!-- Structured Data: WebSite -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" />
+  
+  <!-- CRITICAL CSS INLINE - Eliminates render blocking -->
+  <style>
+    /* Critical above-the-fold styles */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+      font-display: swap;
+    }
+    
+    /* Hero section critical styles */
+    .hero-gradient {
+      background: linear-gradient(135deg, #1E3A8A 0%, #4F46E5 100%);
+      color: white;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    /* Loading states for better LCP */
+    .loading-container {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(45deg, #f5f7fa, #ffffff);
+      flex-direction: column;
+      padding: 20px;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      text-align: center;
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(25, 118, 210, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid #1976d2;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    .loading-title {
+      margin: 0;
+      color: #1976d2;
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .loading-subtitle {
+      margin: 0;
+      color: #6b7280;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Make loading animation responsive */
+    @media (max-width: 600px) {
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .loading-title {
+        font-size: 22px;
+      }
+      
+      .loading-subtitle {
+        font-size: 14px;
+      }
+    }
+    
+    /* Critical button styles */
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+    }
+    
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-2px);
+    }
+    
+    /* Utility classes */
+    .text-center { text-align: center; }
+    .container { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 0 16px; 
+    }
+    .hidden { display: none; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    /* NoScript styling */
+    .noscript-warning {
+      padding: 40px;
+      text-align: center;
+      background: #fef2f2;
+      color: #dc2626;
+      border: 2px solid #fca5a5;
+      border-radius: 8px;
+      margin: 20px;
+    }
+    
+    .noscript-warning h2 {
+      margin: 0 0 16px 0;
+      font-size: 1.5rem;
+    }
+    
+    .noscript-warning p {
+      margin: 0;
+      line-height: 1.6;
+    }
+  </style>
+  
+  <!-- Preconnect to external domains for better performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+  <link rel="preconnect" href="https://googletagmanager.com">
+  <link rel="preconnect" href="https://www.google-analytics.com">
+  
+  <!-- FIXED: Single canonical tag only -->
+  <link rel="canonical" href="https://askhire.in/" />
+  
+  <!-- Enhanced meta tags for better SEO -->
+  <meta name="description" content="Find your dream job at top companies like Barclays, Sage, Expedia Group. Browse software engineer jobs, tech careers, and opportunities with leading employers in India. Start your career journey today!" />
+  <meta name="keywords" content="jobs, software engineer, browse jobs, skills, career, employment, recruitment, hiring, job search, tech jobs, india jobs, askhire" />
+  <meta name="author" content="AskHire" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="language" content="English" />
+  <meta name="revisit-after" content="1 days" />
+  <meta name="distribution" content="global" />
+  <meta name="rating" content="general" />
+  
+  <!-- Geographic targeting -->
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.country" content="India" />
+  <meta name="geo.placename" content="Bengaluru, Karnataka, India" />
+  <meta name="geo.position" content="12.9716;77.5946" />
+  <meta name="ICBM" content="12.9716, 77.5946" />
+  
+  <!-- Enhanced Open Graph meta tags -->
+  <meta property="og:title" content="AskHire - Find Your Dream Job Today | Software Engineer Jobs" />
+  <meta property="og:description" content="Explore top job opportunities at leading companies like Google, Amazon, Microsoft, Infosys, TCS, and Flipkart. Discover roles like Software Engineer, SDE II, and Full Stack Developer." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://askhire.in/" />
+  <meta property="og:image" content="https://askhire.in/logo512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:site_name" content="AskHire" />
+  <meta property="og:locale" content="en_US" />
+  <!-- Enhanced Twitter Card meta tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AskHire - Find Your Dream Job Today | Software Engineer Jobs" />
+  <meta name="twitter:description" content="Find your dream job at top companies like Google, Amazon, Microsoft, TCS, Infosys, and Flipkart. Currently featuring roles like Software Engineer, Backend Developer, and SDE II." />
+  <meta name="twitter:image" content="https://askhire.in/logo512.png" />
+  <meta name="twitter:site" content="@AskHire" />
+  <meta name="twitter:creator" content="@AskHire" />
+  
+  <!-- Favicon and app icons -->
+  <link rel="icon" href="%PUBLIC_URL%/askhire.ico" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/askhire.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/askhire.ico" />
+  
+  <!-- Web app manifest -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  
+  <!-- Theme color for mobile browsers -->
+  <meta name="theme-color" content="#2563EB" />
+  <meta name="msapplication-TileColor" content="#2563EB" />
+  <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml" />
+  
+  <!-- CRITICAL: Non-blocking font loading -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"></noscript>
+  
+  <!-- FIXED: Only Referrer-Policy works in meta tags -->
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+  
+  <!-- Title optimized for SEO (under 60 characters) -->
+  <title>AskHire - Software Engineer Jobs & Tech Careers India</title>
+  
+  <!-- Structured data for organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AskHire",
+    "url": "https://askhire.in",
+    "logo": "https://askhire.in/logo512.png",
+    "description": "Find your dream job at top companies in India. Browse software engineer jobs and career opportunities with leading employers.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Bengaluru",
+      "addressRegion": "Karnataka",
+      "addressCountry": "IN"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "availableLanguage": ["English", "Hindi"]
+    },
+    "sameAs": [
+      "https://twitter.com/AskHire"
+    ],
+    "foundingDate": "2024",
+    "industry": "Technology, Employment, Recruitment"
+  }
+  </script>
+  
+  <!-- Website structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "AskHire",
+    "url": "https://askhire.in",
+    "description": "Find your dream job with AskHire",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://askhire.in/jobs?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  <!-- JobBoard structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "JobBoard",
+    "name": "AskHire Job Board",
+    "url": "https://askhire.in/jobs",
+    "description": "Browse software engineer jobs and career opportunities",
+    "hiringOrganization": {
+      "@type": "Organization",
       "name": "AskHire",
       "url": "https://askhire.in"
     }
-    </script>
-
-    <!-- Structured Data: Organization with Logo -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "AskHire",
-      "url": "https://askhire.in",
-      "logo": "https://askhire.in/logo512.png"
+  }
+  </script>
+</head>
+<body>
+  <!-- CRITICAL: Enhanced loading skeleton for better LCP -->
+  <div id="root">
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <h1 class="loading-title">Loading AskHire...</h1>
+      <p class="loading-subtitle">Finding your dream job opportunities</p>
+    </div>
+  </div>
+  
+  <noscript>
+    <div class="noscript-warning">
+      <h2>JavaScript Required</h2>
+      <p>You need to enable JavaScript to run this app. Please enable JavaScript and reload the page to access AskHire job listings.</p>
+    </div>
+  </noscript>
+  
+  <!-- Screen reader helper -->
+  <div class="sr-only">
+    <h1>AskHire - Job Search Platform</h1>
+    <p>Find software engineer jobs and tech careers in India</p>
+  </div>
+  
+  <!-- CRITICAL: Optimized Google Tag Manager - Primary tracking -->
+  <script>
+    // Initialize dataLayer before any tracking
+    window.dataLayer = window.dataLayer || [];
+    
+    // Load GTM after critical content with error handling
+    function loadGTM() {
+      try {
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+        j.onerror=function(){console.log('GTM loading failed');};
+        f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-TLH379DK');
+      } catch (error) {
+        console.log('GTM initialization failed:', error);
+      }
     }
-    </script>
-  </head>
-
-  <body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLH379DK"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
- 
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
+    
+    // Load after critical content
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadGTM);
+    } else {
+      setTimeout(loadGTM, 100);
+    }
+  </script>
+  
+  <!-- CRITICAL: Optimized Google Analytics - Direct tracking with error handling -->
+  <script>
+    // Load GA after interaction or 3 seconds
+    function loadGA() {
+      try {
+        const gaScript = document.createElement('script'); 
+        gaScript.async = true;
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-3MXZ0J8SCF';
+        gaScript.onerror = function() {
+          console.log('Google Analytics loading failed');
+        };
+        document.head.appendChild(gaScript);
+        
+        // Initialize GA
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3MXZ0J8SCF', {
+          page_title: 'AskHire - Find Your Dream Job',
+          page_location: window.location.href,
+          send_page_view: true,
+          anonymize_ip: true,
+          allow_google_signals: false,
+          allow_ad_personalization_signals: false
+        });
+      } catch (error) {
+        console.log('Google Analytics initialization failed:', error);
+      }
+    }
+    
+    // Load on user interaction or after 3 seconds
+    const gaEvents = ['mousedown', 'touchstart', 'keydown', 'scroll'];
+    const loadGAOnInteraction = () => {
+      loadGA();
+      gaEvents.forEach(event => window.removeEventListener(event, loadGAOnInteraction));
+    };
+    
+    gaEvents.forEach(event => window.addEventListener(event, loadGAOnInteraction, { passive: true }));
+    setTimeout(loadGA, 3000);
+  </script>
+  
+  <!-- CRITICAL: Optimized Google AdSense - Non-blocking with error handling -->
+  <script>
+    function loadAdSense() {
+      try {
+        const adsenseScript = document.createElement('script');
+        adsenseScript.async = true;
+        adsenseScript.crossOrigin = 'anonymous';
+        adsenseScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8482080386120022';
+        adsenseScript.onerror = function() {
+          console.log('AdSense loading failed');
+        };
+        document.head.appendChild(adsenseScript);
+      } catch (error) {
+        console.log('AdSense initialization failed:', error);
+      }
+    }
+    
+    // Load AdSense after page interaction or 4 seconds (after GA)
+    const adsenseEvents = ['scroll', 'click', 'touchstart'];
+    const loadAdSenseOnce = () => {
+      loadAdSense();
+      adsenseEvents.forEach(event => window.removeEventListener(event, loadAdSenseOnce));
+    };
+    
+    adsenseEvents.forEach(event => window.addEventListener(event, loadAdSenseOnce, { passive: true }));
+    setTimeout(loadAdSense, 4000);
+  </script>
+  
+  <!-- CRITICAL: Optimized Social Media Scripts - Deferred with error handling -->
+  <script>
+    function loadSocialScripts() {
+      // Twitter widgets with error handling
+      try {
+        const twitterScript = document.createElement('script');
+        twitterScript.id = 'twitter-wjs';
+        twitterScript.async = true;
+        twitterScript.src = 'https://platform.twitter.com/widgets.js';
+        twitterScript.onerror = function() {
+          console.log('Twitter widgets loading failed');
+        };
+        document.head.appendChild(twitterScript);
+      } catch (error) {
+        console.log('Twitter widgets initialization failed:', error);
+      }
+      
+      // Facebook SDK (only if needed)
+      try {
+        window.fbAsyncInit = function() {
+          if (typeof FB !== 'undefined') {
+            FB.init({
+              appId: 'your_facebook_app_id',
+              cookie: true,
+              xfbml: true,
+              version: 'v18.0'
+            });
+          }
+        };
+      } catch (error) {
+        console.log('Facebook SDK initialization failed:', error);
+      }
+    }
+    
+    // Load social scripts after user interaction or 5 seconds
+    const socialEvents = ['scroll', 'click', 'touchstart'];
+    const loadSocialOnce = () => {
+      loadSocialScripts();
+      socialEvents.forEach(event => window.removeEventListener(event, loadSocialOnce));
+    };
+    
+    socialEvents.forEach(event => window.addEventListener(event, loadSocialOnce, { passive: true }));
+    setTimeout(loadSocialScripts, 5000);
+  </script>
+  
+  <!-- CRITICAL: Optimized Web Vitals Monitoring -->
+  <script>
+    function loadWebVitals() {
+      function sendToAnalytics(metric) {
+        // Only log in development
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          console.log('Core Web Vital:', metric);
+        }
+        
+        // Send to both GTM dataLayer and GA
+        if (window.dataLayer) {
+          window.dataLayer.push({
+            event: 'web_vitals',
+            metric_name: metric.name,
+            metric_value: Math.round(metric.value),
+            metric_id: metric.id
+          });
+        }
+        
+        // Send to GA4 if available
+        if (typeof gtag === 'function') {
+          gtag('event', 'web_vitals', {
+            name: metric.name,
+            value: Math.round(metric.value),
+            event_category: 'Performance'
+          });
+        }
+      }
+      
+      if ('performance' in window && 'PerformanceObserver' in window) {
+        import('https://unpkg.com/web-vitals@3/dist/web-vitals.js')
+          .then(({onCLS, onFID, onFCP, onLCP, onTTFB}) => {
+            onCLS(sendToAnalytics);
+            onFID(sendToAnalytics);
+            onFCP(sendToAnalytics);
+            onLCP(sendToAnalytics);
+            onTTFB(sendToAnalytics);
+          })
+          .catch(error => {
+            console.log('Web vitals library not available:', error);
+          });
+      }
+    }
+    
+    // Load web vitals after user interaction or 6 seconds
+    const vitalsEvents = ['click', 'scroll', 'keydown'];
+    const loadVitalsOnce = () => {
+      loadWebVitals();
+      vitalsEvents.forEach(event => window.removeEventListener(event, loadVitalsOnce));
+    };
+    
+    vitalsEvents.forEach(event => window.addEventListener(event, loadVitalsOnce, { passive: true }));
+    setTimeout(loadWebVitals, 6000);
+  </script>
+  
+  <!-- Service Worker for caching -->
+  <script>
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('SW registered successfully');
+          })
+          .catch(function(registrationError) {
+            console.log('SW registration failed:', registrationError);
+          });
+      });
+    }
+  </script>
+  
+  <!-- Preload critical resources after load -->
+  <script>
+    window.addEventListener('load', function() {
+      // Preload critical images
+      const criticalImages = [
+        '/logo512.png',
+        '/logo192.png'
+      ];
+      
+      criticalImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = src;
+        document.head.appendChild(link);
+      });
+    });
+  </script>
+</body>
 </html>

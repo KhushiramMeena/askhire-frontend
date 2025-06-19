@@ -4,7 +4,6 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { Box, CircularProgress } from '@mui/material';
 
-
 // Layout component
 const Layout = lazy(() => import('./components/layout/Layout'));
 
@@ -24,20 +23,33 @@ const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
+// Import the new NotFoundPage
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
-// Loading fallback component
-const PageLoader: React.FC = () => (
-  <Box 
-    sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh'
-    }}
-  >
-    <CircularProgress color="primary" />
-  </Box>
-);
+// Enhanced loading fallback component
+// const PageLoader: React.FC = () => (
+//   <Box 
+//     sx={{
+//       display: 'flex',
+//       justifyContent: 'center',
+//       alignItems: 'center',
+//       height: '50vh',
+//       flexDirection: 'column',
+//       gap: 2
+//     }}
+//   >
+//     <CircularProgress color="primary" size={40} />
+//     <Box
+//       sx={{
+//         width: 40,
+//         height: 4,
+//         backgroundColor: 'primary.main',
+//         borderRadius: 2,
+//         animation: 'pulse 1.5s ease-in-out infinite'
+//       }}
+//     />
+//   </Box>
+// );
 
 // Protected route wrapper component
 interface ProtectedRouteProps {
@@ -58,7 +70,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
 const AppRoutes: React.FC = () => {
   return (
-    <Suspense fallback={<PageLoader />}>
+    // <Suspense fallback={<PageLoader />}>
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* Public routes */}
@@ -92,11 +104,14 @@ const AppRoutes: React.FC = () => {
             } 
           />
           
-          {/* 404 Error page */}
-          <Route path="*" element={<ErrorPage />} />
+          {/* Legacy error page route (keep for backward compatibility) */}
+          <Route path="error" element={<ErrorPage />} />
+          
+          {/* CRITICAL FIX: Custom 404 error page */}
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
-    </Suspense>
+    // </Suspense>
   );
 };
 

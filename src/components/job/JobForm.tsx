@@ -229,9 +229,9 @@ const handleSubmit = async (e: React.FormEvent) => {
           </Typography>
           
           {/* Top AdSense Banner */}
-          <Box sx={{ mb: 3 }}>
+          {/* <Box sx={{ mb: 3 }}>
             <AdBanner slotId="1234567890" format="leaderboard" />
-          </Box>
+          </Box> */}
           
           {submitError && (
             <Alert severity="error" sx={{ mb: 3 }}>
@@ -434,9 +434,9 @@ const handleSubmit = async (e: React.FormEvent) => {
           </Paper>
           
           {/* Bottom AdSense Banner */}
-          <Box sx={{ mt: 4 }}>
+          {/* <Box sx={{ mt: 4 }}>
             <AdBanner slotId="0987654321" format="leaderboard" />
-          </Box>
+          </Box> */}
         </Box>
       </Container>
       

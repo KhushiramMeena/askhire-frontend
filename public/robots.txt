@@ -1,3 +1,53 @@
+# AskHire Robots.txt
+# Last updated: 2025-06-14
+# Contact: support@askhire.in
+# Website: https://askhire.in
+
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: *.json$
+Disallow: *.log$
+Disallow: *.env$
+Disallow: /build/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: *.map$
+Disallow: *?utm_*
+Disallow: *?ref=*
+Disallow: *?source=*
+Disallow: *?medium=*
+Disallow: *?campaign=*
+Disallow: *?fbclid=*
+Disallow: *?gclid=*
+Allow: /jobs
+Allow: /job/*
+Allow: /about
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /register
+Allow: /login
+Allow: /static/
+Allow: /assets/
+Allow: /images/
+Allow: *.css$
+Allow: *.js$
+Allow: *.png$
+Allow: *.jpg$
+Allow: *.jpeg$
+Allow: *.gif$
+Allow: *.svg$
+Allow: *.webp$
+Allow: *.avif$
+Allow: *.woff$
+Allow: *.woff2$
+Allow: *.ttf$
+Allow: *.ico$
+Crawl-delay: 1
+
 Sitemap: https://askhire.in/sitemap.xml
+# Sitemap: https://askhire.in/sitemap-jobs.xml
+# Sitemap: https://askhire.in/sitemap-companies.xml

@@ -40,9 +40,9 @@ const AboutPage: React.FC = () => {
           </Typography>
 
           {/* AdSense Banner */}
-          <Box sx={{ mb: 4 }}>
+          {/* <Box sx={{ mb: 4 }}>
             <AdBanner slotId="1234567890" format="leaderboard" />
-          </Box>
+          </Box> */}
 
           <Box sx={{ mb: 5 }} component="article">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -142,9 +142,9 @@ const AboutPage: React.FC = () => {
             </Stack>
           </Box>
           {/* AdSense Banner */}
-          <Box sx={{ mt: 4 }}>
+          {/* <Box sx={{ mt: 4 }}>
             <AdBanner slotId="0987654321" format="leaderboard" />
-          </Box>
+          </Box> */}
         </Box>
       </Container>
     </>

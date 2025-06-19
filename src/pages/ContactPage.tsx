@@ -25,18 +25,19 @@ const ContactPage: React.FC = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Contact Us | Askhire</title>
-        <meta name="description" content="Get in touch with our team. We'd love to hear from you!" />
+          <Helmet>
+        <title>Contact Us - AskHire | Get Support for Job Search</title>
+        <meta name="description" content="Contact AskHire support team for help with job search or technical issues. We're here to help you find your dream career." />
+        <link rel="canonical" href="https://askhire.in/contact" />
       </Helmet>
 
       <Container sx={{ py: 6 }}>
         <Box sx={{ maxWidth: 1000, mx: 'auto' }}>
 
           {/* AdSense Banner */}
-          <Box sx={{ mb: 4 }}>
+          {/* <Box sx={{ mb: 4 }}>
             <AdBanner slotId="1234567890" format="leaderboard" />
-          </Box>
+          </Box> */}
 
           <Box sx={{ mb: 4 }}>
             <Box sx={{
@@ -80,9 +81,9 @@ const ContactPage: React.FC = () => {
           </Box>
 
           {/* AdSense Banner */}
-          <Box sx={{ mt: 4 }}>
+          {/* <Box sx={{ mt: 4 }}>
             <AdBanner slotId="0987654321" format="leaderboard" />
-          </Box>
+          </Box> */}
         </Box>
       </Container>
     </>
