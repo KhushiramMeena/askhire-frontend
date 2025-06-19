@@ -56,6 +56,7 @@ import { useAuthStore } from "../store/authStore";
 import { formatSalary, getSalaryRange, getDaysAgo } from "../utils/formatters";
 import AdBanner from "../components/common/AdBanner";
 import Spinner from "../components/common/Spinner";
+import { PAGE_TITLES, UI_TEXT, JOB_TEXT, BREADCRUMB_TEXT } from "../utils/constants";
 
 // For structured data
 interface JobStructuredData {
@@ -343,7 +344,7 @@ const JobDetailPage: React.FC = () => {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Error loading job details
+            {UI_TEXT.ERRORS.GENERIC}
           </Typography>
           <Typography>
             There was a problem loading this job listing. Please try again
@@ -355,7 +356,7 @@ const JobDetailPage: React.FC = () => {
             startIcon={<ArrowBackIcon />}
             sx={{ mt: 2 }}
           >
-            Back to Jobs
+            {UI_TEXT.BUTTONS.BACK_TO_JOBS}
           </Button>
         </Paper>
       </Container>
@@ -376,7 +377,7 @@ const JobDetailPage: React.FC = () => {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Job not found
+            {UI_TEXT.ERRORS.JOB_NOT_FOUND}
           </Typography>
           <Typography>
             The job listing you're looking for doesn't exist or has been
@@ -388,7 +389,7 @@ const JobDetailPage: React.FC = () => {
             startIcon={<ArrowBackIcon />}
             sx={{ mt: 2 }}
           >
-            Back to Jobs
+            {UI_TEXT.BUTTONS.BACK_TO_JOBS}
           </Button>
         </Paper>
       </Container>
@@ -422,7 +423,7 @@ const JobDetailPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{`${currentJob.job_title} at ${currentJob.company_name} | Askhire`}</title>
+        <title>{PAGE_TITLES.JOB_DETAIL(currentJob.job_title, currentJob.company_name)}</title>
         <meta
           name="description"
           content={`Apply for ${currentJob.job_title} position at ${
@@ -452,10 +453,10 @@ const JobDetailPage: React.FC = () => {
             sx={{ mb: 2 }}
           >
             <Link component={RouterLink} to="/" color="inherit">
-              Home
+              {BREADCRUMB_TEXT.HOME}
             </Link>
             <Link component={RouterLink} to="/jobs" color="inherit">
-              Jobs
+              {BREADCRUMB_TEXT.JOBS}
             </Link>
             <Typography color="text.primary">{currentJob.job_title}</Typography>
           </Breadcrumbs>
@@ -469,7 +470,7 @@ const JobDetailPage: React.FC = () => {
           sx={{ mb: 3 }}
           size={isMobile ? "small" : "medium"}
         >
-          Back to Jobs
+          {UI_TEXT.BUTTONS.BACK_TO_JOBS}
         </Button>
 
         {/* Job Header */}
@@ -570,15 +571,9 @@ const JobDetailPage: React.FC = () => {
                         rel="noopener noreferrer"
                         sx={{ borderRadius: 2 }}
                       >
-                        Apply Now
+                        {UI_TEXT.BUTTONS.APPLY}
                       </Button>
-                      {/* <Button
-                        variant="outlined"
-                        sx={{ minWidth: 0, borderRadius: 2 }}
-                      >
-                        <BookmarkIcon fontSize="small" />
-                      </Button> */}
-                      <Tooltip title={copied ? "Copied!" : "Copy link"}>
+                      <Tooltip title={copied ? UI_TEXT.ALERTS.COPIED : UI_TEXT.BUTTONS.COPY_LINK}>
                         <Button
                           onClick={handleCopy}
                           variant="outlined"
@@ -602,21 +597,7 @@ const JobDetailPage: React.FC = () => {
                   }}
                 >
                   <Stack direction="row" spacing={1}>
-                    {/* <Button
-                      variant="outlined"
-                      size="small"
-                      sx={{ borderRadius: 2 }}
-                    >
-                      <BookmarkIcon fontSize="small" />
-                    </Button> */}
-                    {/* <Button
-                      variant="outlined"
-                      size="small"
-                      sx={{ borderRadius: 2 }}
-                    >f
-                      <ShareIcon fontSize="small" />
-                    </Button> */}
-                    <Tooltip title={copied ? "Copied!" : "Copy link"}>
+                    <Tooltip title={copied ? UI_TEXT.ALERTS.COPIED : UI_TEXT.BUTTONS.COPY_LINK}>
                       <Button
                         onClick={handleCopy}
                         variant="outlined"
@@ -645,7 +626,7 @@ const JobDetailPage: React.FC = () => {
                         },
                       }}
                     >
-                      Apply Now
+                      {UI_TEXT.BUTTONS.APPLY}
                     </Button>
                   </Stack>
                 </Box>
@@ -676,7 +657,7 @@ const JobDetailPage: React.FC = () => {
                 fontSize="small"
                 sx={{ mr: 1, color: theme.palette.warning.main }}
               />
-              Key Highlights
+              {JOB_TEXT.JOB_DETAIL.KEY_HIGHLIGHTS}
             </Typography>
 
             <Box
@@ -731,39 +712,29 @@ const JobDetailPage: React.FC = () => {
                   "& .MuiChip-icon": { color: theme.palette.success.main },
                 }}
               />
-              {/* <Tooltip
-                title="Note: Salary/Stipend figures are estimates gathered from sources like Glassdoor and Quora. AskHire does not guarantee their accuracy."
+              <Tooltip
+                title={JOB_TEXT.JOB_DETAIL.SALARY_NOTE}
                 placement="right"
                 arrow
+                disableHoverListener={window.innerWidth < 768}
               >
-                <IconButton size="small" sx={{ ml: 1 }}>
+                <IconButton
+                  size="small"
+                  sx={{ ml: 1 }}
+                  onClick={handleClick}
+                >
                   <InfoIcon fontSize="small" />
                 </IconButton>
-              </Tooltip> */}
+              </Tooltip>
 
-<Tooltip
-        title="Note: Salary/Stipend figures are estimates gathered from sources like Glassdoor and Quora. AskHire does not guarantee their accuracy."
-        placement="right"
-        arrow
-        disableHoverListener={window.innerWidth < 768}
-      >
-        <IconButton
-          size="small"
-          sx={{ ml: 1 }}
-          onClick={handleClick}
-        >
-          <InfoIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
-
-      {/* Snackbar for mobile */}
-      <Snackbar
-        open={open}
-        autoHideDuration={4000}
-        onClose={() => setOpen(false)}
-        message="Salary/Stipend figures are estimates from sources like Glassdoor and Quora. AskHire does not guarantee their accuracy."
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      />
+              {/* Snackbar for mobile */}
+              <Snackbar
+                open={open}
+                autoHideDuration={4000}
+                onClose={() => setOpen(false)}
+                message={JOB_TEXT.JOB_DETAIL.SALARY_NOTE}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              />
             </Box>
           </Box>
         </Paper>
@@ -836,7 +807,7 @@ const JobDetailPage: React.FC = () => {
                     alignItems: "center",
                   }}
                 >
-                  Job Description
+                  {JOB_TEXT.JOB_DETAIL.JOB_DESCRIPTION}
                 </Typography>
               </Box>
 
@@ -913,7 +884,7 @@ const JobDetailPage: React.FC = () => {
                   }}
                 >
                   <CodeIcon sx={{ mr: 1, color: theme.palette.primary.main }} />
-                  Required Skills
+                  {JOB_TEXT.JOB_DETAIL.REQUIRED_SKILLS}
                 </Typography>
 
                 <Box
@@ -945,7 +916,7 @@ const JobDetailPage: React.FC = () => {
                     gutterBottom
                     sx={{ fontWeight: 600 }}
                   >
-                    Eligibility Information
+                    {JOB_TEXT.JOB_DETAIL.ELIGIBILITY_INFO}
                   </Typography>
 
                   <Box
@@ -989,11 +960,11 @@ const JobDetailPage: React.FC = () => {
                           sx={{ mr: 1 }}
                         />
                         <Typography variant="body2" color="text.secondary">
-                          Qualification
+                          {JOB_TEXT.JOB_DETAIL.QUALIFICATION}
                         </Typography>
                       </Box>
                       <Typography variant="body1" fontWeight={500}>
-                        Eligible Batch :{" "}
+                        {JOB_TEXT.JOB_DETAIL.ELIGIBLE_BATCH}{" "}
                         <strong>
                           {currentJob.eligibleBatch || "Bachelor's degree"}
                         </strong>
@@ -1035,7 +1006,7 @@ const JobDetailPage: React.FC = () => {
                     },
                   }}
                 >
-                  Apply for this role
+                  {UI_TEXT.BUTTONS.APPLY_ROLE}
                 </Button>
                 <Button
                   href={`https://www.google.com/search?q=about ${encodeURIComponent(
@@ -1052,7 +1023,7 @@ const JobDetailPage: React.FC = () => {
                     flex: { xs: "1 1 100%", sm: "0 1 auto" },
                   }}
                 >
-                  Learn more about {currentJob.company_name}
+                  {JOB_TEXT.JOB_DETAIL.COMPANY_LEARN_MORE(currentJob.company_name)}
                 </Button>
               </Box>
             </Paper>
@@ -1095,7 +1066,7 @@ const JobDetailPage: React.FC = () => {
                   borderBottom: `2px solid ${theme.palette.primary.light}`,
                 }}
               >
-                Similar Jobs
+                {JOB_TEXT.JOB_DETAIL.SIMILAR_JOBS}
               </Typography>
 
               <List sx={{ mt: 2 }}>
@@ -1170,7 +1141,7 @@ const JobDetailPage: React.FC = () => {
                     color="text.secondary"
                     sx={{ py: 2, textAlign: "center" }}
                   >
-                    No similar jobs found
+                    {JOB_TEXT.JOB_DETAIL.NO_SIMILAR_JOBS}
                   </Typography>
                 )}
               </List>
@@ -1183,7 +1154,7 @@ const JobDetailPage: React.FC = () => {
                 fullWidth
                 sx={{ mt: 1 }}
               >
-                View all jobs
+                {UI_TEXT.BUTTONS.VIEW_ALL_JOBS}
               </Button>
             </Paper>
 
