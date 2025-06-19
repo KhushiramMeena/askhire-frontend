@@ -5,19 +5,21 @@ import { Facebook, Twitter, LinkedIn } from '@mui/icons-material';
 import askhire from '../../assets/askhire.svg'
 import EmailIcon from '@mui/icons-material/Email';
 import TelegramIcon from '@mui/icons-material/Telegram';
+import { FOOTER_LINKS, SITE_INFO } from '../../utils/constants';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
-  // All links in one array
+  // All links from constants
+  const companyLinks = FOOTER_LINKS.COMPANY.LINKS;
+  const legalLinks = FOOTER_LINKS.LEGAL.LINKS;
+  
+  // Create a flattened version of all links
   const allLinks = [
-    { text: 'Home', path: '/' },
+    { text: 'Home', path: '/' }, 
     { text: 'Browse Jobs', path: '/jobs' },
-    { text: 'About', path: '/about' },
-    { text: 'Contact', path: '/contact' },
-    { text: 'Terms & conditions', path: '/terms-of-service' },
-    { text: 'Privacy Policy', path: '/privacy-policy' },
-    { text: 'DMCA', path: '/dmca' }
+    ...companyLinks.map(link => ({ text: link.LABEL, path: link.HREF })),
+    ...legalLinks.map(link => ({ text: link.LABEL, path: link.HREF }))
   ];
   
   return (
@@ -44,35 +46,22 @@ const Footer: React.FC = () => {
             mb: { xs: 1, sm: 0 }
           }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-              {/* <Typography 
-                variant="subtitle1" 
-                sx={{ 
-                  ml: 0.75, 
-                  fontWeight: 600, 
-                  fontSize: '0.95rem',
-                  color: 'white'
-                }}
-              >
-                Askhire
-              </Typography> */}
-              <img src={askhire} alt="AskHire" />
+              <img src={askhire} alt={SITE_INFO.NAME} />
             </Box>
             
             {/* Social icons */}
             <Box sx={{ display: 'flex', ml: { xs: 0, sm: 0 } }}>
-                            <IconButton size="small" href="https://t.me/AskhireOfficial" color="inherit" aria-label="Telegram" sx={{ p: 0.5 }}>
+              <IconButton size="small" href="https://t.me/AskhireOfficial" color="inherit" aria-label="Telegram" sx={{ p: 0.5 }}>
                 <TelegramIcon fontSize="small" />
               </IconButton>
-              
             
               <IconButton size="small" href="https://www.linkedin.com/company/askhire/" color="inherit" aria-label="LinkedIn" sx={{ p: 0.5 }}>
                 <LinkedIn fontSize="small" />
               </IconButton>
               <IconButton size="small" href="mailto:hello@askhire.in" color="inherit" aria-label="Email" sx={{ p: 0.5 }}>
-  <EmailIcon fontSize="small" />
-  <p style={{ color: '#a0aec0', marginLeft: 4, fontSize:'4' }}>hello@askhire.in</p>
-</IconButton>
+                <EmailIcon fontSize="small" />
+                <p style={{ color: '#a0aec0', marginLeft: 4, fontSize:'4' }}>hello@askhire.in</p>
+              </IconButton>
             </Box>
           </Box>
           
@@ -126,7 +115,7 @@ const Footer: React.FC = () => {
               fontSize: '0.75rem' 
             }}
           >
-            Copyright &copy; {currentYear} All rights reserved
+            {SITE_INFO.COPYRIGHT}
           </Typography>
         </Box>
       </Container>

@@ -1,11 +1,10 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useJobStore } from '../../store/jobStore';
 import { useAuthStore } from '../../store/authStore';
 import { Helmet } from 'react-helmet-async';
 import AdBanner from '../common/AdBanner';
+import { PAGE_TITLES, UI_TEXT, JOB_TEXT } from '../../utils/constants';
 
 
 // MUI imports
@@ -39,18 +38,6 @@ interface FormData {
   apply_link: string;
   workplace: string;
 }
-
-const EMPLOYMENT_TYPES = [
-  'Full-time',
-  'Part-time',
-  'Contract',
-  'Temporary',
-  'Internship',
-  'Volunteer',
-  'Freelance'
-];
-
-const WORKPLACE_TYPES = ['Remote', 'Hybrid', 'Onsite'];
 
 const JobForm: React.FC = () => {
   const navigate = useNavigate();
@@ -132,25 +119,25 @@ const JobForm: React.FC = () => {
     const requiredFields: (keyof FormData)[] = ['job_title', 'company_name', 'description', 'location', 'skills', 'apply_link'];
     requiredFields.forEach(field => {
       if (!formData[field].trim()) {
-        errors[field] = 'This field is required';
+        errors[field] = UI_TEXT.FORM.REQUIRED;
         isValid = false;
       }
     });
 
     // Validate URL fields
     if (formData.company_logo && !isValidUrl(formData.company_logo)) {
-      errors.company_logo = 'Please enter a valid URL';
+      errors.company_logo = UI_TEXT.FORM.INVALID_URL;
       isValid = false;
     }
 
     if (formData.apply_link && !isValidUrl(formData.apply_link)) {
-      errors.apply_link = 'Please enter a valid URL';
+      errors.apply_link = UI_TEXT.FORM.INVALID_URL;
       isValid = false;
     }
 
     // Validate salary
     if (formData.expectedSalary && !isValidSalary(formData.expectedSalary)) {
-      errors.expectedSalary = 'Please enter a valid number';
+      errors.expectedSalary = UI_TEXT.FORM.INVALID_SALARY;
       isValid = false;
     }
 
@@ -178,7 +165,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   
   // Check authentication status
   if (!isAuthenticated) {
-    setSnackbarMessage('You need to be logged in to post a job');
+    setSnackbarMessage(UI_TEXT.ERRORS.UNAUTHORIZED);
     setSnackbarOpen(true);
     sessionStorage.setItem('jobFormData', JSON.stringify(formData));
     navigate('/login', { state: { from: '/post-job' } });
@@ -200,12 +187,12 @@ const handleSubmit = async (e: React.FormEvent) => {
       navigate('/jobs');
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
-        setSnackbarMessage('Your session has expired. Please log in again.');
+        setSnackbarMessage(JOB_TEXT.JOB_FORM.ERRORS.SESSION_EXPIRED);
         setSnackbarOpen(true);
         sessionStorage.setItem('jobFormData', JSON.stringify(formData));
         navigate('/login', { state: { from: '/post-job' } });
       } else {
-        const message = error.response?.data?.detail || error.message || 'An error occurred while posting the job';
+        const message = error.response?.data?.detail || error.message || UI_TEXT.ERRORS.GENERIC;
         setSubmitError(message);
       }
     }
@@ -218,14 +205,14 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <>
       <Helmet>
-        <title>Post a New Job | Askhire</title>
+        <title>{PAGE_TITLES.POST_JOB}</title>
         <meta name="description" content="Post a new job opportunity and reach thousands of potential candidates." />
       </Helmet>
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box maxWidth="md" mx="auto">
           <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" sx={{ mb: 3 }}>
-            Post a New Job
+            {JOB_TEXT.JOB_FORM.TITLE}
           </Typography>
           
           {/* Top AdSense Banner */}
@@ -245,12 +232,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
-                    label="Job Title"
+                    label={JOB_TEXT.JOB_FORM.FIELDS.JOB_TITLE}
                     id="job_title"
                     name="job_title"
                     value={formData.job_title}
                     onChange={handleInputChange}
-                    placeholder="e.g. Senior React Developer"
+                    placeholder={JOB_TEXT.JOB_FORM.FIELDS.JOB_TITLE_PLACEHOLDER}
                     error={!!formErrors.job_title}
                     helperText={formErrors.job_title}
                     required
@@ -258,47 +245,46 @@ const handleSubmit = async (e: React.FormEvent) => {
                   
                   <TextField
                     fullWidth
-                    label="Company Name"
+                    label={JOB_TEXT.JOB_FORM.FIELDS.COMPANY_NAME}
                     id="company_name"
                     name="company_name"
                     value={formData.company_name}
                     onChange={handleInputChange}
-                    placeholder="e.g. Acme Inc."
+                    placeholder={JOB_TEXT.JOB_FORM.FIELDS.COMPANY_NAME_PLACEHOLDER}
                     error={!!formErrors.company_name}
                     helperText={formErrors.company_name}
                     required
                   />
                 </Stack>
                 
-                {/* Rest of the form fields remain unchanged */}
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
-                    label="Location"
+                    label={JOB_TEXT.JOB_FORM.FIELDS.LOCATION}
                     id="location"
                     name="location"
                     value={formData.location}
                     onChange={handleInputChange}
-                    placeholder="e.g. Bengaluru, Karnataka"
+                    placeholder={JOB_TEXT.JOB_FORM.FIELDS.LOCATION_PLACEHOLDER}
                     error={!!formErrors.location}
                     helperText={formErrors.location}
                     required
                   />
                   
                   <FormControl fullWidth>
-                    <InputLabel id="workplace-label">Workplace Type</InputLabel>
+                    <InputLabel id="workplace-label">{JOB_TEXT.JOB_FORM.FIELDS.WORKPLACE_TYPE}</InputLabel>
                     <Select
                       labelId="workplace-label"
                       id="workplace"
                       name="workplace"
                       value={formData.workplace}
                       onChange={e => handleSelectChange(e as any)}
-                      label="Workplace Type"
+                      label={JOB_TEXT.JOB_FORM.FIELDS.WORKPLACE_TYPE}
                     >
                       <MenuItem value="">
                         <em>Select Workplace Type</em>
                       </MenuItem>
-                      {WORKPLACE_TYPES.map(type => (
+                      {JOB_TEXT.WORKPLACE_TYPES.map(type => (
                         <MenuItem key={type} value={type}>
                           {type}
                         </MenuItem>
@@ -309,19 +295,19 @@ const handleSubmit = async (e: React.FormEvent) => {
                 
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <FormControl fullWidth>
-                    <InputLabel id="employment-type-label">Employment Type</InputLabel>
+                    <InputLabel id="employment-type-label">{JOB_TEXT.JOB_FORM.FIELDS.EMPLOYMENT_TYPE}</InputLabel>
                     <Select
                       labelId="employment-type-label"
                       id="employment_type"
                       name="employment_type"
                       value={formData.employment_type}
                       onChange={e => handleSelectChange(e as any)}
-                      label="Employment Type"
+                      label={JOB_TEXT.JOB_FORM.FIELDS.EMPLOYMENT_TYPE}
                     >
                       <MenuItem value="">
                         <em>Select Employment Type</em>
                       </MenuItem>
-                      {EMPLOYMENT_TYPES.map(type => (
+                      {JOB_TEXT.EMPLOYMENT_TYPES.map(type => (
                         <MenuItem key={type} value={type}>
                           {type}
                         </MenuItem>
@@ -331,13 +317,13 @@ const handleSubmit = async (e: React.FormEvent) => {
                   
                   <TextField
                     fullWidth
-                    label="Expected Salary (INR per year)"
+                    label={JOB_TEXT.JOB_FORM.FIELDS.EXPECTED_SALARY}
                     id="expectedSalary"
                     name="expectedSalary"
                     type="number"
                     value={formData.expectedSalary}
                     onChange={handleInputChange}
-                    placeholder="e.g. 1200000"
+                    placeholder={JOB_TEXT.JOB_FORM.FIELDS.EXPECTED_SALARY_PLACEHOLDER}
                     error={!!formErrors.expectedSalary}
                     helperText={formErrors.expectedSalary}
                   />
@@ -346,12 +332,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <TextField
                     fullWidth
-                    label="Eligible Batch"
+                    label={JOB_TEXT.JOB_FORM.FIELDS.ELIGIBLE_BATCH}
                     id="eligibleBatch"
                     name="eligibleBatch"
                     value={formData.eligibleBatch}
                     onChange={handleInputChange}
-                    placeholder="e.g. 2020-2024"
+                    placeholder={JOB_TEXT.JOB_FORM.FIELDS.ELIGIBLE_BATCH_PLACEHOLDER}
                   />
                   
                   <Box sx={{ width: '100%' }}></Box> {/* Spacer for alignment */}
@@ -359,12 +345,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                 
                 <TextField
                   fullWidth
-                  label="Skills Required"
+                  label={JOB_TEXT.JOB_FORM.FIELDS.SKILLS}
                   id="skills"
                   name="skills"
                   value={formData.skills}
                   onChange={handleInputChange}
-                  placeholder="e.g. React, TypeScript, NodeJS (comma separated)"
+                  placeholder={JOB_TEXT.JOB_FORM.FIELDS.SKILLS_PLACEHOLDER}
                   error={!!formErrors.skills}
                   helperText={formErrors.skills}
                   required
@@ -372,24 +358,24 @@ const handleSubmit = async (e: React.FormEvent) => {
                 
                 <TextField
                   fullWidth
-                  label="Company Logo URL"
+                  label={JOB_TEXT.JOB_FORM.FIELDS.COMPANY_LOGO}
                   id="company_logo"
                   name="company_logo"
                   value={formData.company_logo}
                   onChange={handleInputChange}
-                  placeholder="e.g. https://example.com/logo.png"
+                  placeholder={JOB_TEXT.JOB_FORM.FIELDS.COMPANY_LOGO_PLACEHOLDER}
                   error={!!formErrors.company_logo}
                   helperText={formErrors.company_logo}
                 />
                 
                 <TextField
                   fullWidth
-                  label="Application URL"
+                  label={JOB_TEXT.JOB_FORM.FIELDS.APPLICATION_URL}
                   id="apply_link"
                   name="apply_link"
                   value={formData.apply_link}
                   onChange={handleInputChange}
-                  placeholder="e.g. https://example.com/careers/apply"
+                  placeholder={JOB_TEXT.JOB_FORM.FIELDS.APPLICATION_URL_PLACEHOLDER}
                   error={!!formErrors.apply_link}
                   helperText={formErrors.apply_link}
                   required
@@ -399,12 +385,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                   fullWidth
                   multiline
                   rows={8}
-                  label="Job Description"
+                  label={JOB_TEXT.JOB_FORM.FIELDS.DESCRIPTION}
                   id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  placeholder="Enter detailed job description, responsibilities, requirements, etc."
+                  placeholder={JOB_TEXT.JOB_FORM.FIELDS.DESCRIPTION_PLACEHOLDER}
                   error={!!formErrors.description}
                   helperText={formErrors.description}
                   required
@@ -422,10 +408,10 @@ const handleSubmit = async (e: React.FormEvent) => {
                     {loading ? (
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
-                        Posting Job...
+                        {JOB_TEXT.JOB_FORM.BUTTONS.POSTING_JOB}
                       </Box>
                     ) : (
-                      'Post Job'
+                      JOB_TEXT.JOB_FORM.BUTTONS.POST_JOB
                     )}
                   </Button>
                 </Box>
