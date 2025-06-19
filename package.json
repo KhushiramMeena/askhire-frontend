@@ -48,8 +48,8 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ],
-    "proxy": "https://35.188.133.42"
+    ]
+ 
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2"

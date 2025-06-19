@@ -63,6 +63,7 @@ interface JobStructuredData {
   "@type": string;
   title: string;
   datePosted: string;
+  validThrough?: string;
   description: string;
   hiringOrganization: {
     "@type": string;
@@ -74,6 +75,10 @@ interface JobStructuredData {
     address: {
       "@type": string;
       addressLocality: string;
+      streetAddress?: string;
+      addressRegion?: string;
+      postalCode?: string;
+      addressCountry?: string;
     };
   };
   employmentType?: string;
@@ -188,12 +193,23 @@ const JobDetailPage: React.FC = () => {
   // Set up structured data
   useEffect(() => {
     if (currentJob) {
+      // Get location components
+      const locationParts = currentJob.location.split(',').map(part => part.trim());
+      const city = locationParts[0] || '';
+      const region = locationParts[1] || '';
+      
+      // Calculate validThrough date - 30 days from posting
+      const postDate = new Date(currentJob.post_date);
+      const validThrough = new Date(postDate);
+      validThrough.setDate(validThrough.getDate() + 30);
+      
       // Create structured data for SEO
       const jobData: JobStructuredData = {
         "@context": "https://schema.org",
         "@type": "JobPosting",
         title: currentJob.job_title,
         datePosted: currentJob.post_date,
+        validThrough: validThrough.toISOString(),
         description: currentJob.description,
         hiringOrganization: {
           "@type": "Organization",
@@ -203,7 +219,11 @@ const JobDetailPage: React.FC = () => {
           "@type": "Place",
           address: {
             "@type": "PostalAddress",
-            addressLocality: currentJob.location,
+            addressLocality: city,
+            addressRegion: region || 'Karnataka',
+            streetAddress: "Not specified",
+            postalCode: "560000",
+            addressCountry: "IN"
           },
         },
       };
@@ -303,21 +323,10 @@ const JobDetailPage: React.FC = () => {
     ? getWorkplaceTypeStyle(currentJob.workplace)
     : getWorkplaceTypeStyle();
 
+  // Remove page-specific spinner since we're using the global loader in index.html
   if (loading) {
-    return (
-      <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "50vh",
-          }}
-        >
-          <Spinner size="large" />
-        </Box>
-      </Container>
-    );
+    // Return null to let the global loader handle this state
+    return null;
   }
 
   if (error) {
@@ -760,9 +769,9 @@ const JobDetailPage: React.FC = () => {
         </Paper>
 
         {/* AdSense Banner */}
-        <Box sx={{ display: { xs: "none", md: "block" }, mb: 4 }}>
+        {/* <Box sx={{ display: { xs: "none", md: "block" }, mb: 4 }}>
           <AdBanner slotId="1234567890" format="leaderboard" />
-        </Box>
+        </Box> */}
 
         {/* Main Content */}
         <Box
@@ -1179,16 +1188,16 @@ const JobDetailPage: React.FC = () => {
             </Paper>
 
             {/* AdSense Banner */}
-            <Box sx={{ mt: 3 }}>
+            {/* <Box sx={{ mt: 3 }}>
               <AdBanner slotId="9876543210" format="rectangle" />
-            </Box>
+            </Box> */}
           </Box>
         </Box>
 
         {/* Bottom AdSense Banner */}
-        <Box sx={{ mt: 6 }}>
+        {/* <Box sx={{ mt: 6 }}>
           <AdBanner slotId="0987654321" format="leaderboard" />
-        </Box>
+        </Box> */}
       </Container>
     </>
   );

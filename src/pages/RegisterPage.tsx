@@ -109,9 +109,9 @@ const handleSubmit = async (e: React.FormEvent) => {
         </Box>
 
         {/* AdSense Banner */}
-        <Box sx={{ mb: 4 }}>
+        {/* <Box sx={{ mb: 4 }}>
           <AdBanner slotId="1234567890" format="rectangle" />
-        </Box>
+        </Box> */}
 
         <Paper elevation={3} sx={{ p: { xs: 3, md: 4 }, borderRadius: 2 }}>
           {error && (

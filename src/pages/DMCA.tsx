@@ -40,9 +40,9 @@ const DMCAPage: React.FC = () => {
         </Box>
         
         {/* AdSense Banner */}
-        <Box sx={{ mb: 4 }}>
+        {/* <Box sx={{ mb: 4 }}>
           <AdBanner slotId="1234567890" format="leaderboard" />
-        </Box>
+        </Box> */}
         
         <Paper elevation={2} sx={{ p: { xs: 3, md: 4 }, borderRadius: 1 }}>
           <Alert severity="info" sx={{ mb: 4 }}>
@@ -275,9 +275,9 @@ const DMCAPage: React.FC = () => {
         </Paper>
         
         {/* AdSense Banner */}
-        <Box sx={{ mt: 4 }}>
+        {/* <Box sx={{ mt: 4 }}>
           <AdBanner slotId="0987654321" format="leaderboard" />
-        </Box>
+        </Box> */}
       </Container>
     </>
   );

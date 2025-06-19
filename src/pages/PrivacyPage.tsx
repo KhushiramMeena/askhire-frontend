@@ -28,9 +28,9 @@ const PrivacyPolicyPage: React.FC = () => {
         </Box>
         
         {/* AdSense Banner */}
-        <Box sx={{ mb: 4 }}>
+        {/* <Box sx={{ mb: 4 }}>
           <AdBanner slotId="1234567890" format="leaderboard" />
-        </Box>
+        </Box> */}
         
         <Paper elevation={2} sx={{ p: { xs: 3, md: 4 }, borderRadius: 1 }}>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -194,9 +194,9 @@ const PrivacyPolicyPage: React.FC = () => {
         </Paper>
         
         {/* AdSense Banner */}
-        <Box sx={{ mt: 4 }}>
+        {/* <Box sx={{ mt: 4 }}>
           <AdBanner slotId="0987654321" format="leaderboard" />
-        </Box>
+        </Box> */}
       </Container>
     </>
   );

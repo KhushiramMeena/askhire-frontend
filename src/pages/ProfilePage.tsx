@@ -199,9 +199,9 @@ const ProfilePage: React.FC = () => {
           </Typography>
           
           {/* AdSense Banner */}
-          <Box mb={4}>
+          {/* <Box mb={4}>
             <AdBanner slotId="1234567890" format="leaderboard" />
-          </Box>
+          </Box> */}
           
           <Box sx={{ 
             bgcolor: 'background.paper', 
@@ -541,9 +541,9 @@ const ProfilePage: React.FC = () => {
           </Box>
           
           {/* AdSense Banner */}
-          <Box mt={4}>
+          {/* <Box mt={4}> 
             <AdBanner slotId="0987654321" format="leaderboard" />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </>

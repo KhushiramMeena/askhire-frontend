@@ -1,8 +1,6 @@
-
 // src/components/security/CompleteAuthSecurityWrapper.tsx
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../../store/authStore';
-import { CircularProgress, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import crypto from 'crypto-js';
 
@@ -164,8 +162,6 @@ const CompleteAuthSecurityWrapper: React.FC<{ children: React.ReactNode }> = ({ 
   // Initialize security system
   useEffect(() => {
     if (hydrated) {
-
-      
       if (isAuthenticated && user && token) {
         // First update the security hashes
         updateSecurityHashes();
@@ -237,23 +233,8 @@ const CompleteAuthSecurityWrapper: React.FC<{ children: React.ReactNode }> = ({ 
     }
   }, [isAuthenticated, user, token]);
   
-  // Show loading indicator while initializing
-  if (!isInitialized) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh'
-        }}
-      >
-        <CircularProgress color="primary" />
-      </Box>
-    );
-  }
-  
-  // Render children once initialized
+  // Rendering section - no more loading spinner
+  // The index.html loader will handle the initial loading state
   return <>{children}</>;
 };
 
