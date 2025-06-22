@@ -21,6 +21,7 @@ import {
   useMediaQuery,
   useTheme
 } from '@mui/material';
+import '../../../src/css/layout/Header.css';
 import {
   Menu as MenuIcon,
   Work as WorkIcon,
@@ -32,6 +33,7 @@ import {
 import { Helmet } from 'react-helmet-async';
 import askhire from '../../assets/askhire.svg'
 import { useAuthStore } from '../../store/authStore';
+import { OptimizedImage } from '../../utils/ImageOptimizer';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -129,9 +131,15 @@ const Header: React.FC = () => {
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           {/* Logo */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <RouterLink to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-             
-            <img src={askhire} alt="AskHire" />
+            <RouterLink to="/" className="header-logo">
+              <OptimizedImage 
+                src={askhire} 
+                alt="AskHire" 
+                width={140} 
+                height={40} 
+                objectFit="contain" 
+                priority={true}
+              />
             </RouterLink>
           </Box>
 
@@ -143,19 +151,9 @@ const Header: React.FC = () => {
                   key={link.path}
                   component={RouterLink}
                   to={link.path}
+                  className={`header-nav-button ${isActive(link.path) ? 'active' : ''}`}
                   sx={{
-                    mx: 1,
                     color: isActive(link.path) ? 'primary.main' : 'text.primary',
-                    position: 'relative',
-                    '&::after': isActive(link.path) ? {
-                      content: '""',
-                      position: 'absolute',
-                      bottom: 0,
-                      left: '20%',
-                      width: '60%',
-                      height: 2,
-                      bgcolor: 'primary.main',
-                    } : {}
                   }}
                 >
                   {link.text}
@@ -172,21 +170,13 @@ const Header: React.FC = () => {
                 {!isMobile && (
                   <Button
                     onClick={handleUserMenuOpen}
-                    sx={{ 
-                      ml: 2,
-                      textTransform: 'none',
-                      color: 'text.primary'
-                    }}
+                    className="header-user-button"
+                    sx={{color: 'text.primary'}}
                     endIcon={<KeyboardArrowDownIcon />}
                   >
                     <Avatar 
-                      sx={{ 
-                        width: 32, 
-                        height: 32, 
-                        bgcolor: 'primary.main', 
-                        fontSize: '0.875rem',
-                        mr: 1 
-                      }}
+                      className="header-user-avatar"
+                      sx={{bgcolor: 'primary.main'}}
                     >
                       {getAvatarLetter()}
                     </Avatar>
@@ -210,7 +200,7 @@ const Header: React.FC = () => {
                   }}
                   PaperProps={{
                     elevation: 3,
-                    sx: { width: 130, mt: 0 }
+                    className: "header-menu"
                   }}
                   disableScrollLock={true}
                 >
@@ -218,7 +208,7 @@ const Header: React.FC = () => {
                     component={RouterLink} 
                     to="/profile"
                     onClick={handleUserMenuClose}
-                    sx={{ gap: 1.5 }}
+                    className="header-menu-item"
                   >
                     <PersonIcon fontSize="small" />
                     Profile
@@ -235,7 +225,7 @@ const Header: React.FC = () => {
                   <Divider />
                   <MenuItem 
                     onClick={handleLogout}
-                    sx={{ gap: 1.5 }}
+                    className="header-menu-item"
                   >
                     <LogoutIcon fontSize="small" />
                     Logout
@@ -289,19 +279,15 @@ const Header: React.FC = () => {
         open={drawerOpen}
         onClose={closeDrawer}
         PaperProps={{
-          sx: { width: 280 }
+          className: "header-drawer"
         }}
       >
         <Box sx={{ pt: 2, pb: 2 }}>
           {isAuthenticated && (
-            <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+            <Box className="header-drawer-user">
               <Avatar 
-                sx={{ 
-                  bgcolor: 'primary.main',
-                  width: 40,
-                  height: 40,
-                  mr: 2
-                }}
+                className="header-drawer-avatar"
+                sx={{bgcolor: 'primary.main'}}
               >
                 {getAvatarLetter()}
               </Avatar>
@@ -363,7 +349,7 @@ const Header: React.FC = () => {
               </ListItem>
             </List>
           ) : (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 2, gap: 2 }}>
+            <Box className="header-drawer-buttons">
               <Button
                 component={RouterLink}
                 to="/login"

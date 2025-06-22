@@ -1,0 +1,94 @@
+/* AdBanner.css - Styles for AdSense banners */
+
+.ad-banner-container {
+  width: 100%;
+  min-height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.ad-banner-responsive {
+  width: 100%;
+}
+
+/* Ensure minimum dimensions for AdSense */
+.ad-banner-container .adsbygoogle {
+  min-width: 300px;
+  min-height: 90px;
+}
+
+/* Development placeholders */
+.ad-banner-placeholder {
+  width: 100%;
+  height: 120px;
+  background-color: #f0f0f0;
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+.ad-banner-error {
+  width: 100%;
+  height: 60px;
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 12px;
+}
+
+/* AdSense-friendly size adjustments */
+.ad-format-leaderboard {
+  max-width: 728px;
+  height: 90px;
+}
+
+.ad-format-banner {
+  max-width: 468px;
+  height: 60px;
+}
+
+.ad-format-rectangle {
+  width: 300px;
+  height: 250px;
+}
+
+.ad-format-skyscraper {
+  width: 160px;
+  height: 600px;
+}
+
+/* Make ad containers responsive */
+@media (max-width: 728px) {
+  .ad-format-leaderboard {
+    height: 90px;
+    min-height: 50px;
+  }
+}
+
+@media (max-width: 468px) {
+  .ad-format-banner {
+    height: 60px;
+    min-height: 50px;
+  }
+}
+
+@media (max-width: 336px) {
+  .ad-banner-container {
+    min-height: 50px;
+  }
+  
+  .ad-banner-container .adsbygoogle {
+    min-width: 200px;
+    min-height: 50px;
+  }
+} 

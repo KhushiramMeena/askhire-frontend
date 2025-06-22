@@ -514,19 +514,20 @@ const JobsPage: React.FC = () => {
 
         {/* Error handling */}
         {error && (
-          <Paper
+          <Box
             sx={{
               p: 3,
               mb: 3,
               bgcolor: 'error.light',
               color: 'error.dark',
               borderLeft: 5,
-              borderColor: 'error.main'
+              borderColor: 'error.main',
+              border: '1px solid #e0e0e0',
             }}
             role="alert"
           >
             <Typography>Error loading jobs. Please try again later.</Typography>
-          </Paper>
+          </Box>
         )}
 
         {/* Main content */}
@@ -605,7 +606,7 @@ const JobsPage: React.FC = () => {
             )}
           </>
         ) : noJobsFound ? (
-          <Paper sx={{ p: 6, textAlign: 'center', border: 1, borderColor: 'divider', borderRadius: 2 }}>
+          <Box sx={{ p: 6, textAlign: 'center', border: 1, borderColor: 'divider', borderRadius: 2 }}>
             <Box mb={3}>
               <BusinessCenterIcon sx={{ fontSize: 60, color: 'text.secondary', opacity: 0.5 }} />
             </Box>
@@ -643,7 +644,7 @@ const JobsPage: React.FC = () => {
                 )}
               </Stack>
             )}
-          </Paper>
+          </Box>
         ) : (
           <Box sx={{ py: 8, textAlign: 'center' }}>
             <Spinner size="large" />
@@ -655,10 +656,70 @@ const JobsPage: React.FC = () => {
           <AdBanner slotId="0987654321" format="leaderboard" responsive={true} />
         </Box> */}
 
-        {/* Enhanced SEO content section */}
-        <Paper 
+        {/* Industry Trends Section - Added high-value content */}
+        <Box 
           component="section"
-          sx={{ mt: 6, p: { xs: 3, sm: 4 }, border: 1, borderColor: 'divider', borderRadius: 2 }}
+          sx={{ my: 6, p: { xs: 3, sm: 4 }, border: 1, borderColor: 'divider', borderRadius: 2, backgroundColor: 'background.paper' }}
+          aria-labelledby="trends-heading"
+        >
+          <Typography 
+            id="trends-heading"
+            component="h2"
+            variant="h5" 
+            gutterBottom 
+            fontWeight={600}
+          >
+            2025 Tech Industry Trends & Software Engineer Career Insights
+          </Typography>
+          
+          <Typography variant="h6" gutterBottom sx={{ mt: 3, color: 'primary.main', fontWeight: 600 }}>
+            Emerging Technology Trends
+          </Typography>
+          <Typography paragraph>
+            The tech landscape continues to evolve rapidly, creating new opportunities for software engineers and IT professionals. Understanding current trends can help you position your career for growth and target in-demand skills.
+          </Typography>
+          <Box component="ul" sx={{ pl: 4, mb: 4 }}>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>AI and Machine Learning:</strong> The demand for engineers with expertise in artificial intelligence and machine learning continues to grow across industries. Roles focusing on large language models, generative AI, and machine learning operations (MLOps) are seeing significant salary premiums.
+            </Typography>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>Cloud-Native Development:</strong> As organizations continue migrating to cloud environments, professionals skilled in cloud-native development practices, containerization (Docker, Kubernetes), and microservices architecture are highly sought after.
+            </Typography>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>Web3 and Blockchain:</strong> Despite market fluctuations, companies are still investing in blockchain technology for various applications beyond cryptocurrencies, including supply chain management, digital identity verification, and smart contracts.
+            </Typography>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>Edge Computing:</strong> With IoT devices generating massive amounts of data, edge computing is becoming increasingly important. Software engineers who understand how to develop for edge environments are finding new opportunities.
+            </Typography>
+          </Box>
+          
+          <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', fontWeight: 600 }}>
+            In-Demand Skills for Software Engineers
+          </Typography>
+          <Typography paragraph>
+            Beyond language-specific expertise, employers are increasingly looking for software engineers with the following skills:
+          </Typography>
+          <Box component="ul" sx={{ pl: 4, mb: 4 }}>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>Full-Stack Development:</strong> Engineers who can work across the entire technology stack, from front-end to back-end development, remain highly employable. Familiarity with modern frameworks like React, Angular, or Vue.js, combined with back-end knowledge, makes candidates especially valuable.
+            </Typography>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>DevOps and CI/CD:</strong> Understanding of DevOps principles and tools for continuous integration and continuous deployment pipelines (GitHub Actions, Jenkins, etc.) is increasingly becoming a baseline expectation for many software engineering roles.
+            </Typography>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>Security Knowledge:</strong> With cybersecurity threats on the rise, software engineers with security expertise are in high demand. Understanding secure coding practices, threat modeling, and basic security principles can significantly enhance your employability.
+            </Typography>
+            <Typography component="li" variant="body1" paragraph>
+              <strong>Data Engineering:</strong> As companies collect more data than ever, professionals who can build robust data pipelines, implement ETL processes, and work with big data technologies are seeing excellent career prospects.
+            </Typography>
+          </Box>
+          
+        </Box>
+
+        {/* Enhanced SEO content section */}
+        <Box 
+          component="section"
+          sx={{ mt: 6, p: { xs: 3, sm: 4 }, border: 1, borderColor: 'divider', borderRadius: 2, backgroundColor: 'background.paper' }}
           aria-labelledby="seo-heading"
         >
           <Typography 
@@ -684,7 +745,7 @@ const JobsPage: React.FC = () => {
             Start your job search today and discover the perfect career opportunity matching your skills 
             and preferences. Join thousands of professionals who found their dream jobs through AskHire.
           </Typography>
-        </Paper>
+        </Box>
       </Container>
     </>
   );

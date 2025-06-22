@@ -6,6 +6,7 @@ import askhire from '../../assets/askhire.svg'
 import EmailIcon from '@mui/icons-material/Email';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import { FOOTER_LINKS, SITE_INFO } from '../../utils/constants';
+import { OptimizedImage } from '../../utils/ImageOptimizer';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -46,7 +47,14 @@ const Footer: React.FC = () => {
             mb: { xs: 1, sm: 0 }
           }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <img src={askhire} alt={SITE_INFO.NAME} />
+              <OptimizedImage 
+                src={askhire} 
+                alt={SITE_INFO.NAME} 
+                width={120} 
+                height={35} 
+                objectFit="contain"
+                priority={true}
+              />
             </Box>
             
             {/* Social icons */}

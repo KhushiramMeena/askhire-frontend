@@ -5,6 +5,7 @@ import JobCard from '../components/job/JobCard';
 import Spinner from '../components/common/Spinner';
 import AdBanner from '../components/common/AdBanner';
 import { Helmet } from 'react-helmet-async';
+import '../css/pages/HomePage.css';
 import {
   Box,
   Button,
@@ -189,49 +190,26 @@ const HomePage: React.FC = () => {
       {/* Hero Section - Optimized for LCP */}
       <Box 
         component="section"
-        sx={{ 
-          background: 'linear-gradient(135deg, #1E3A8A 0%, #4F46E5 100%)', 
-          color: 'white', 
-          py: { xs: 5, sm: 7, md: 9 },
-          position: 'relative',
-          overflow: 'hidden',
-          // Optimize for LCP - avoid background images that block rendering
-          willChange: 'transform',
-        }}
+        className="hero-section"
+        sx={{ py: { xs: 5, sm: 7, md: 9 } }}
       >
         <Container sx={{ position: 'relative', zIndex: 2 }}>
-          <Box sx={{ 
-            textAlign: 'center', 
-            maxWidth: { xs: '100%', sm: 600, md: 700 }, 
-            mx: 'auto',
-            px: { xs: 2, sm: 0 }
-          }}>
+          <Box className="hero-content" 
+            sx={{ px: { xs: 2, sm: 0 } }}>
             {/* CRITICAL FIX: Proper H1 heading with keywords */}
-            <Typography 
+                          <Typography 
               component="h1"
               variant="h2"
-              sx={{ 
-                fontWeight: 800, 
-                mb: { xs: 2, sm: 3 },
-                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-                lineHeight: { xs: 1.2, sm: 1.1 },
-                // Optimize font loading for LCP
-                fontDisplay: 'swap'
-              }}
+              className="hero-title"
+              sx={{ mb: { xs: 2, sm: 3 } }}
             >
               Find Your Dream Job Today
             </Typography>
-            <Typography 
+                          <Typography 
               component="p"
               variant="h6"
-              sx={{ 
-                mb: { xs: 3, sm: 4 }, 
-                color: '#93C5FD',
-                maxWidth: '90%',
-                mx: 'auto',
-                fontWeight: 400,
-                fontSize: { xs: '1rem', sm: '1.1rem' }
-              }}
+              className="hero-subtitle"
+              sx={{ mb: { xs: 3, sm: 4 } }}
             >
               Discover opportunities in software engineering, browse jobs at top companies, and build your career with AskHire.
             </Typography>
@@ -241,20 +219,11 @@ const HomePage: React.FC = () => {
                 to="/jobs"
                 variant="contained"
                 size={isMobile ? "medium" : "large"}
+                className="hero-button"
                 aria-label="Browse all job listings and software engineer positions"
                 sx={{ 
-                  backgroundColor: 'white', 
-                  color: '#2563EB', 
-                  fontWeight: 600,
                   px: { xs: 3, sm: 4 },
-                  py: { xs: 1.2, sm: 1.5 },
-                  borderRadius: '8px',
-                  fontSize: { xs: '0.9rem', sm: '1rem' },
-                  '&:hover': { 
-                    backgroundColor: '#EFF6FF',
-                    transform: 'translateY(-2px)',
-                  },
-                  transition: 'all 0.2s ease-in-out'
+                  py: { xs: 1.2, sm: 1.5 }
                 }}
               >
                 Browse Jobs
@@ -338,20 +307,20 @@ const HomePage: React.FC = () => {
               <Spinner />
             </Box>
           ) : error ? (
-            <Paper
-              elevation={0}
+            <Box
               sx={{ 
                 backgroundColor: '#FEE2E2', 
                 borderLeft: '4px solid #EF4444', 
                 padding: 3, 
                 borderRadius: 1,
-                mb: 2
+                mb: 2,
+                border: '1px solid #e0e0e0',
               }}
             >
               <Typography sx={{ color: '#B91C1C' }}>
                 Error loading jobs. Please try again later.
               </Typography>
-            </Paper>
+            </Box>
           ) : featuredJobs.length > 0 ? (
             <Box
               role="list"
@@ -383,13 +352,13 @@ const HomePage: React.FC = () => {
               ))}
             </Box>
           ) : (
-            <Paper
-              elevation={1}
+            <Box
               sx={{ 
                 backgroundColor: 'white', 
                 padding: 4, 
                 textAlign: 'center',
-                borderRadius: 2
+                borderRadius: 2,
+                border: '1px solid #e0e0e0',
               }}
             >
               <Typography>No featured jobs available at the moment.</Typography>
@@ -401,18 +370,11 @@ const HomePage: React.FC = () => {
               >
                 Post a Job
               </Button>
-            </Paper>
+            </Box>
           )}
 
           {/* AdSense Banner */}
-          {/* <Box 
-            sx={{ 
-              mt: { xs: 4, sm: 5 },
-              overflow: 'hidden',
-              borderRadius: 2,
-              width: '100%'
-            }}
-          >
+          {/* <Box className="ad-container">
             <AdBanner slotId="1234567890" format="leaderboard" />
           </Box> */}
         </Container>
@@ -463,9 +425,8 @@ const HomePage: React.FC = () => {
                 description: 'All job listings are verified to ensure authenticity, quality and genuine career opportunities.'
               }
             ].map((feature, index) => (
-              <Paper
+              <Box
                 key={index}
-                elevation={0}
                 sx={{
                   p: { xs: 3, sm: 4 },
                   textAlign: 'center',
@@ -475,8 +436,8 @@ const HomePage: React.FC = () => {
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-4px)',
-                    boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)'
-                  }
+                  },
+                  backgroundColor: 'background.paper'
                 }}
               >
                 <Box sx={{ mb: 2 }}>
@@ -500,7 +461,7 @@ const HomePage: React.FC = () => {
                 >
                   {feature.description}
                 </Typography>
-              </Paper>
+              </Box>
             ))}
           </Box>
 
@@ -535,6 +496,108 @@ const HomePage: React.FC = () => {
             >
               Get Started Today
             </Button>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Job Seeker Resources Section - Added high-value content */}
+      <Box 
+        component="section"
+        sx={{ 
+          py: { xs: 5, md: 7 }, 
+          backgroundColor: '#F5F7FA'
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography 
+            component="h2"
+            variant="h4"
+            sx={{ 
+              fontWeight: 'bold', 
+              mb: { xs: 4, md: 5 }, 
+              textAlign: 'center',
+              fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' },
+              color: '#111827'
+            }}
+          >
+            Job Seeker Resources
+          </Typography>
+
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: '#2563EB' }}>
+              Resume Building Tips for Software Engineers
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Creating an effective resume is crucial in today's competitive job market. For software engineers and IT professionals, highlighting the right skills and experiences can significantly increase your chances of landing interviews. Here are some expert tips:
+            </Typography>
+            <Box component="ul" sx={{ pl: 4, mb: 4 }}>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Showcase your technical skills:</strong> List programming languages, frameworks, and tools you're proficient in. Be specific about your experience level with each technology.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Highlight relevant projects:</strong> Include details of significant projects, emphasizing your role, technologies used, and quantifiable results achieved.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Demonstrate problem-solving abilities:</strong> Employers value candidates who can tackle complex challenges. Describe specific problems you've solved and the approaches you took.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Include certifications:</strong> Relevant certifications can validate your skills and demonstrate your commitment to professional development.
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: '#2563EB' }}>
+              Interview Preparation Strategies
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Preparing thoroughly for job interviews can give you a significant advantage. For technical roles, interviews often involve both technical assessments and behavioral questions. Consider these strategies:
+            </Typography>
+            <Box component="ul" sx={{ pl: 4 }}>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Research the company:</strong> Understand the company's products, services, culture, and recent developments to tailor your responses accordingly.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Practice coding challenges:</strong> Familiarize yourself with common algorithms and data structures. Platforms like LeetCode and HackerRank offer excellent practice problems.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Prepare for behavioral questions:</strong> Use the STAR method (Situation, Task, Action, Result) to structure your responses to behavioral questions.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Prepare thoughtful questions:</strong> Having insightful questions demonstrates your genuine interest in the role and company.
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Additional AdSense Banner */}
+          {/* <Box sx={{ my: 5 }}>
+            <AdBanner slotId="9876543210" format="rectangle" />
+          </Box> */}
+
+          <Box>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: '#2563EB' }}>
+              Career Development in Tech
+            </Typography>
+            <Typography variant="body1" paragraph>
+              The technology field evolves rapidly, requiring professionals to continuously update their skills and knowledge. To advance your career effectively:
+            </Typography>
+            <Box component="ul" sx={{ pl: 4 }}>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Stay current with industry trends:</strong> Follow tech blogs, participate in webinars, and join professional communities to keep up with emerging technologies and methodologies.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Build a professional network:</strong> Connect with peers, mentors, and industry leaders through platforms like LinkedIn and tech meetups.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Contribute to open-source projects:</strong> This demonstrates your skills to potential employers while allowing you to learn from experienced developers.
+              </Typography>
+              <Typography component="li" variant="body1" paragraph>
+                <strong>Pursue continuous learning:</strong> Take courses, earn certifications, and work on side projects to expand your skill set and demonstrate your passion for the field.
+              </Typography>
+            </Box>
+            <Typography variant="body1" sx={{ mt: 3 }}>
+              By implementing these strategies, you can enhance your marketability and progress toward your career goals in the competitive tech industry.
+            </Typography>
           </Box>
         </Container>
       </Box>

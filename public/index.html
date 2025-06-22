@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+
   
   <!-- CRITICAL CSS INLINE - Eliminates render blocking -->
   <style>
@@ -536,6 +537,44 @@
         document.head.appendChild(link);
       });
     });
+  </script>
+  
+  <script>
+    // Enable native lazy loading for images
+    if ('loading' in HTMLImageElement.prototype) {
+      // Browser supports native lazy loading
+      console.log('Native lazy loading supported');
+    } else {
+      // Fallback for browsers that don't support native lazy loading
+      document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        const config = {
+          rootMargin: '200px 0px',
+          threshold: 0.01
+        };
+
+        let observer = new IntersectionObserver(function(entries, self) {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const lazyImage = entry.target;
+              if (lazyImage.dataset.src) {
+                lazyImage.src = lazyImage.dataset.src;
+              }
+              lazyImage.removeAttribute('data-src');
+              self.unobserve(lazyImage);
+            }
+          });
+        }, config);
+
+        images.forEach(image => {
+          if (image.src) {
+            image.setAttribute('data-src', image.src);
+            image.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
+          }
+          observer.observe(image);
+        });
+      });
+    }
   </script>
 </body>
 </html>

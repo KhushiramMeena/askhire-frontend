@@ -1,0 +1,287 @@
+/* main.css - Global CSS variables and styles */
+
+:root {
+  /* Primary color palette */
+  --primary-color: #1976d2;
+  --primary-light: #4791db;
+  --primary-dark: #115293;
+  --primary-contrast: #fff;
+  
+  /* Secondary color palette */
+  --secondary-color: #ff5722;
+  --secondary-light: #ff8a50;
+  --secondary-dark: #c41c00;
+  --secondary-contrast: #fff;
+  
+  /* Background colors */
+  --bg-default: #f5f7fa;
+  --bg-paper: #ffffff;
+  
+  /* Text colors */
+  --text-primary: #2c3e50;
+  --text-secondary: #546e7a;
+  
+  /* Status colors */
+  --error-color: #f44336;
+  --warning-color: #ff9800;
+  --info-color: #03a9f4;
+  --success-color: #4caf50;
+  
+  /* Other colors */
+  --divider-color: #e0e0e0;
+  
+  /* Shadows */
+  --shadow-1: 0px 2px 4px rgba(0,0,0,0.05);
+  --shadow-2: 0px 3px 6px rgba(0,0,0,0.1);
+  --shadow-3: 0px 4px 8px rgba(0,0,0,0.1);
+  
+  /* Border radius */
+  --border-radius-sm: 4px;
+  --border-radius: 8px;
+  --border-radius-lg: 12px;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Typography */
+  --font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  --font-weight-extra-bold: 700;
+  
+  /* Z-index levels */
+  --z-index-drawer: 1200;
+  --z-index-app-bar: 1100;
+  --z-index-modal: 1300;
+  --z-index-tooltip: 1500;
+}
+
+/* Reset margin and padding, prevent horizontal scrolling */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background-color: var(--bg-default);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Ensure proper zooming */
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation; /* Allow pinch zoom but prevent double-tap zoom */
+}
+
+/* Ensure all interactive elements support touch and zoom */
+a, button, input, select, textarea, [role="button"] {
+  touch-action: manipulation; /* Allow pinch zoom but prevent double-tap zoom */
+}
+
+/* Ensure proper touch behavior on mobile */
+@media (pointer: coarse) {
+  button, [role="button"], a, input[type="button"], input[type="submit"] {
+    min-height: 44px; /* Recommended minimum touch target size */
+    min-width: 44px;
+  }
+}
+
+/* Ensure images and other media fit within the viewport */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure all elements respect the box model and avoid overflow */
+* {
+  box-sizing: border-box;
+}
+
+/* Link styles */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Paper element styles */
+.paper {
+  background-color: var(--bg-paper);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-1);
+}
+
+/* Common utility classes */
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+/* Loading and spinner styles */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, var(--bg-default), #ffffff);
+  color: var(--text-primary);
+  padding: 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(25, 118, 210, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--primary-color);
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+.loading-title {
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  margin: 10px 0;
+  color: var(--primary-color);
+}
+
+.loading-subtitle {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive layout support */
+.container {
+  width: 100%;
+  padding-right: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 600px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 960px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1170px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+/* Make loading animation responsive */
+@media (max-width: 600px) {
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .loading-title {
+    font-size: 22px;
+  }
+  
+  .loading-subtitle {
+    font-size: 14px;
+  }
+}
+
+/* AdSense compatibility helpers */
+.adsense-container {
+  margin: var(--spacing-md) 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Important: Add specific ad sizes required by Google AdSense */
+.adsense-container-300x250 {
+  width: 300px;
+  height: 250px;
+  max-width: 100%;
+}
+
+.adsense-container-728x90 {
+  width: 728px;
+  height: 90px;
+  max-width: 100%;
+}
+
+.adsense-container-responsive {
+  min-height: 250px;
+}
+
+/* Clearfix for legacy browsers */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Accessibility enhancements */
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+} 

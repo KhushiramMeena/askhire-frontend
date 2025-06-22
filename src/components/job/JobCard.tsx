@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { 
   Card, 
@@ -25,99 +25,14 @@ import { Job } from '../../types/job';
 import { getSalaryRange, getDaysAgo } from '../../utils/formatters';
 import { getUserCountry } from '../../utils/LocationUtils';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import '../../../src/css/components/JobCard.css';
+import { OptimizedImage } from '../../utils/ImageOptimizer';
 
 interface JobCardProps {
   job: Job;
   isAdmin?: boolean;
   onDelete?: (jobId: number) => void;
 }
-
-// Modern image component with WebP support and lazy loading
-const OptimizedImage: React.FC<{
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  className?: string;
-}> = ({ src, alt, width, height, className }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
-  const handleImageLoad = useCallback(() => {
-    setImageLoaded(true);
-  }, []);
-
-  const handleImageError = useCallback(() => {
-    setImageError(true);
-    setImageLoaded(true);
-  }, []);
-
-  // Generate WebP and AVIF versions if possible
-  const getModernImageSrc = (originalSrc: string) => {
-    // If it's already a modern format, return as is
-    if (originalSrc.includes('.webp') || originalSrc.includes('.avif')) {
-      return originalSrc;
-    }
-    
-    // Try to generate WebP version (you'd implement this based on your image CDN)
-    // For now, return original src
-    return originalSrc;
-  };
-
-  if (imageError) {
-    return (
-      <Avatar 
-        sx={{ 
-          width, 
-          height,
-          bgcolor: 'primary.light',
-          color: 'primary.contrastText',
-          fontSize: '1.2rem',
-          fontWeight: 600
-        }}
-        className={className}
-      >
-        {alt.charAt(0).toUpperCase()}
-      </Avatar>
-    );
-  }
-
-  return (
-    <Box sx={{ position: 'relative', width, height }}>
-      {!imageLoaded && (
-        <Skeleton 
-          variant="circular" 
-          width={width} 
-          height={height}
-          sx={{ position: 'absolute', top: 0, left: 0 }}
-        />
-      )}
-      <picture>
-        {/* Modern formats first */}
-        <source srcSet={getModernImageSrc(src)} type="image/webp" />
-        <img
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          className={className}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          loading="lazy"
-          decoding="async"
-          style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: '50%',
-            objectFit: 'cover',
-            opacity: imageLoaded ? 1 : 0,
-            transition: 'opacity 0.3s ease'
-          }}
-        />
-      </picture>
-    </Box>
-  );
-};
 
 const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => {
   const theme = useTheme();
@@ -217,51 +132,25 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jobStructuredData) }}
       />
       
-      <Card
+      <Box
         component="article"
         onClick={handleCardClick}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          textDecoration: 'none',
-          height: 320, // Fixed height for all cards
-          width: '100%',
-          maxWidth: { xs: '100%', sm: 350, md: 345 },
-          margin: { xs: '0 auto', sm: 0 }, // Center on mobile
-          overflow: 'hidden', 
-          boxSizing: 'border-box',
-          cursor: 'pointer',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          position: 'relative',
-          border: '1px solid',
-          borderColor: 'divider',
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: theme.shadows[3],
-            borderColor: 'primary.main',
-            '& .job-title': {
-              color: 'primary.main'
-            }
-          },
-          '&:focus-visible': {
-            outline: '2px solid',
-            outlineColor: 'primary.main',
-            outlineOffset: '2px'
-          }
-        }}
-        elevation={1}
+        className="job-card"
         role="article"
         aria-label={`${job.job_title} at ${job.company_name}`}
         tabIndex={0}
+        sx={{
+          border: '1px solid #e0e0e0',
+          borderRadius: 2,
+          transition: 'all 0.2s ease',
+          backgroundColor: 'background.paper',
+          '&:hover': {
+            borderColor: 'primary.main',
+            transform: 'translateY(-3px)',
+          }
+        }}
       >
-        <CardContent sx={{ 
-          p: 2.5, 
-          height: '100%', 
-          display: 'flex', 
-          flexDirection: 'column',
-          overflow: 'hidden'
-          
-        }}>
+        <Box className="job-card-content" sx={{ p: 2 }}>
           {/* Card Header - Fixed height */}
           <Box sx={{ 
             display: 'flex', 
@@ -278,6 +167,8 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
                   alt={`${job.company_name} company logo`}
                   width={48}
                   height={48}
+                  borderRadius="50%"
+                  fallbackChar={job.company_name.charAt(0).toUpperCase()}
                 />
               ) : (
                 <Avatar 
@@ -535,8 +426,8 @@ const JobCard: React.FC<JobCardProps> = ({ job, isAdmin = false, onDelete }) => 
               View Details
             </Button>
           </Box>
-        </CardContent>
-      </Card>
+        </Box>
+      </Box>
     </>
   );
 };

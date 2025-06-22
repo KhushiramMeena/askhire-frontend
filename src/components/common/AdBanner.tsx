@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box } from '@mui/material';
+import '../../../src/css/common/AdBanner.css';
 
 interface AdBannerProps {
   slotId: string;
@@ -101,68 +101,55 @@ const AdBanner: React.FC<AdBannerProps> = ({
 
   // Development placeholder
   if (process.env.NODE_ENV === 'development') {
+    const placeholderStyle = {
+      width: dimensions.width === 'auto' ? '100%' : dimensions.width,
+      height: dimensions.height === 'auto' ? 120 : dimensions.height,
+      ...style
+    };
+    
     return (
-      <Box
-        sx={{
-          width: dimensions.width === 'auto' ? '100%' : dimensions.width,
-          height: dimensions.height === 'auto' ? 120 : dimensions.height,
-          backgroundColor: '#f0f0f0',
-          border: '2px dashed #ccc',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#666',
-          fontSize: '14px',
-          fontFamily: 'monospace',
-          ...style
-        }}
+      <div 
+        className="ad-banner-placeholder" 
+        style={placeholderStyle}
       >
         AdSense Placeholder ({format})
-      </Box>
+      </div>
     );
   }
 
   // Error state
   if (hasError) {
+    const errorStyle = {
+      width: dimensions.width === 'auto' ? '100%' : dimensions.width,
+      height: 60,
+      ...style
+    };
+    
     return (
-      <Box
-        sx={{
-          width: dimensions.width === 'auto' ? '100%' : dimensions.width,
-          height: 60,
-          backgroundColor: '#fafafa',
-          border: '1px solid #eee',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#999',
-          fontSize: '12px',
-          ...style
-        }}
+      <div 
+        className="ad-banner-error" 
+        style={errorStyle}
       >
         Advertisement
-      </Box>
+      </div>
     );
   }
 
+  // Format-specific class
+  const formatClass = format !== 'auto' ? `ad-format-${format}` : '';
+  const responsiveClass = responsive ? 'ad-banner-responsive' : '';
+  
+  const containerStyle = {
+    width: responsive ? '100%' : dimensions.width,
+    minHeight: responsive ? 90 : dimensions.height,
+    ...style
+  };
+
   return (
-    <Box
-      component="div"
+    <div
       ref={adRef}
-      sx={{
-        width: responsive ? '100%' : dimensions.width,
-        minHeight: responsive ? 90 : dimensions.height,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        overflow: 'hidden',
-        ...style,
-        // Ensure minimum dimensions for AdSense
-        '& .adsbygoogle': {
-          minWidth: responsive ? '300px' : 'auto',
-          minHeight: responsive ? '90px' : 'auto',
-        }
-      }}
+      className={`ad-banner-container ${responsiveClass} ${formatClass}`}
+      style={containerStyle}
       aria-label="Advertisement"
     />
   );

@@ -333,7 +333,7 @@ const JobDetailPage: React.FC = () => {
   if (error) {
     return (
       <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
-        <Paper
+        <Box
           sx={{
             p: 4,
             bgcolor: "error.light",
@@ -341,6 +341,7 @@ const JobDetailPage: React.FC = () => {
             borderLeft: 6,
             borderColor: "error.main",
             borderRadius: 1,
+            border: '1px solid #e0e0e0',
           }}
         >
           <Typography variant="h6" gutterBottom>
@@ -358,7 +359,7 @@ const JobDetailPage: React.FC = () => {
           >
             {UI_TEXT.BUTTONS.BACK_TO_JOBS}
           </Button>
-        </Paper>
+        </Box>
       </Container>
     );
   }
@@ -474,16 +475,14 @@ const JobDetailPage: React.FC = () => {
         </Button>
 
         {/* Job Header */}
-        <Paper
-          elevation={2}
+        <Box
           sx={{
             mb: 4,
             overflow: "hidden",
             borderRadius: { xs: 2, md: 3 },
             transition: "all 0.3s ease",
-            "&:hover": {
-              boxShadow: 6,
-            },
+            border: '1px solid #e0e0e0',
+            backgroundColor: 'background.paper',
           }}
         >
           <Box
@@ -737,7 +736,7 @@ const JobDetailPage: React.FC = () => {
               />
             </Box>
           </Box>
-        </Paper>
+        </Box>
 
         {/* AdSense Banner */}
         {/* <Box sx={{ display: { xs: "none", md: "block" }, mb: 4 }}>
@@ -761,8 +760,7 @@ const JobDetailPage: React.FC = () => {
             }}
           >
             {/* Job Description */}
-            <Paper
-              elevation={3}
+            <Box
               sx={{
                 p: { xs: 2, sm: 3, md: 4 },
                 borderRadius: { xs: 2, md: 3 },
@@ -770,10 +768,8 @@ const JobDetailPage: React.FC = () => {
                 mb: 4,
                 overflow: "hidden",
                 position: "relative",
-                "&:hover": {
-                  boxShadow: 6,
-                  transform: "translateY(-2px)",
-                },
+                border: '1px solid #e0e0e0',
+                backgroundColor: 'background.paper',
                 "&::before": {
                   content: '""',
                   position: "absolute",
@@ -1026,7 +1022,7 @@ const JobDetailPage: React.FC = () => {
                   {JOB_TEXT.JOB_DETAIL.COMPANY_LEARN_MORE(currentJob.company_name)}
                 </Button>
               </Box>
-            </Paper>
+            </Box>
 
             {/* Mobile Ad Banner */}
             <Box sx={{ display: { xs: "block", md: "none" }, my: 4 }}>
@@ -1043,16 +1039,14 @@ const JobDetailPage: React.FC = () => {
             }}
           >
             {/* Similar Jobs */}
-            <Paper
-              elevation={2}
+            <Box
               sx={{
                 p: { xs: 2, sm: 3 },
                 borderRadius: { xs: 2, md: 3 },
                 transition: "all 0.3s ease",
                 mb: 3,
-                "&:hover": {
-                  boxShadow: 4,
-                },
+                border: '1px solid #e0e0e0',
+                backgroundColor: 'background.paper',
               }}
             >
               <Typography
@@ -1156,7 +1150,7 @@ const JobDetailPage: React.FC = () => {
               >
                 {UI_TEXT.BUTTONS.VIEW_ALL_JOBS}
               </Button>
-            </Paper>
+            </Box>
 
             {/* AdSense Banner */}
             {/* <Box sx={{ mt: 3 }}>

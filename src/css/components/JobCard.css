@@ -1,0 +1,226 @@
+/* JobCard.css - Styles for job listing cards */
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  height: 320px;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border: 1px solid;
+  border-color: var(--divider-color);
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-3);
+  border-color: var(--primary-color);
+}
+
+.job-card:hover .job-title {
+  color: var(--primary-color);
+}
+
+.job-card:focus-visible {
+  outline: 2px solid;
+  outline-color: var(--primary-color);
+  outline-offset: 2px;
+}
+
+.job-card-content {
+  padding: 1.25rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+  min-height: 60px;
+  max-height: 60px;
+}
+
+.job-card-header-left {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+.job-card-company-logo-container {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.job-card-company-logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.job-card-company-avatar {
+  width: 48px;
+  height: 48px;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.job-card-company-info {
+  min-width: 0;
+  flex: 1;
+  margin-left: 0.5rem;
+}
+
+.job-card-title-row {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  margin-bottom: 0.25rem;
+}
+
+.job-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  flex: 1;
+  min-width: 0;
+  margin-right: 0.5rem;
+  transition: color 0.2s ease;
+  line-height: 1.3;
+}
+
+.job-workplace-chip {
+  height: 20px;
+  flex-shrink: 0;
+  font-weight: 500;
+  font-size: 0.7rem;
+}
+
+.job-company-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.job-card-details {
+  margin-bottom: 1rem;
+  min-height: 80px;
+  max-height: 80px;
+  overflow: hidden;
+}
+
+.job-detail-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.job-detail-icon {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.job-detail-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.job-card-skills {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.job-skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  overflow: hidden;
+  max-height: 56px;
+  align-content: flex-start;
+}
+
+.job-skills-label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.job-skill-chip {
+  height: 24px;
+  font-weight: 500;
+}
+
+.job-extra-skills-chip {
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.job-card-action {
+  margin-top: auto;
+  padding-top: 0;
+}
+
+.job-view-button {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 500;
+  height: 30px;
+}
+
+.job-view-button:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .job-title {
+    font-size: 0.9rem;
+  }
+  
+  .job-company-name,
+  .job-detail-text,
+  .job-skills-label {
+    font-size: 0.8rem;
+  }
+  
+  .job-view-button {
+    font-size: 0.75rem;
+  }
+  
+  .job-extra-skills-chip {
+    font-size: 0.65rem;
+  }
+}
+
+/* AdSense compatibility adjustments */
+@media (max-width: 336px) {
+  .job-card-header {
+    min-height: 70px;
+    max-height: 70px;
+  }
+  
+  .job-card-company-avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5rem;
+  }
+} 
